@@ -1,40 +1,34 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
+import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 
-// https://vite.dev/config/
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src'),
+      '@': resolve(__dirname, './src'),
     },
   },
+  server: {
+    port: 3000,
+    open: true,
+  },
   build: {
-    // Build optimization settings
-    target: 'es2015',
-    minify: 'terser',
+    outDir: 'dist',
     sourcemap: true,
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
+          mui: ['@mui/material', '@mui/icons-material'],
           router: ['react-router-dom'],
-          ui: ['@mui/material', '@mui/icons-material'],
-          state: ['@reduxjs/toolkit', 'react-redux'],
-          http: ['axios'],
+          redux: ['@reduxjs/toolkit', 'react-redux'],
         },
       },
     },
-    // Chunk size warning limit
-    chunkSizeWarningLimit: 1000,
   },
-  server: {
-    port: 3000,
-    open: true,
-    cors: true,
-  },
-  preview: {
-    port: 3001,
+  optimizeDeps: {
+    include: ['react', 'react-dom', '@mui/material', '@mui/icons-material'],
   },
 });
