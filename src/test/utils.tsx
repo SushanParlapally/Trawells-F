@@ -1,59 +1,59 @@
-import React, { ReactElement } from 'react';
-import { render, RenderOptions } from '@testing-library/react';
+import React from 'react';
+import type { ReactElement } from 'react';
+import { render } from '@testing-library/react';
+import type { RenderOptions } from '@testing-library/react';
+import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material/styles';
-import { createTheme } from '@mui/material/styles';
-import { configureStore } from '@reduxjs/toolkit';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import authSlice from '../store/slices/authSlice';
+import type { AuthState } from '../types';
 
-// Create a basic theme for testing
-const theme = createTheme();
-
-// Create a mock store for testing
-const createMockStore = (initialState = {}) => {
-  return configureStore({
-    reducer: {
-      // Add your reducers here when they're created
-      auth: (state = { user: null, isAuthenticated: false }, _action) => state,
-    },
-    preloadedState: initialState,
-  });
-};
-
-interface AllTheProvidersProps {
-  children: React.ReactNode;
-  initialState?: any;
+// Define the root state type for the test store
+interface RootState {
+  auth: AuthState;
 }
 
-const AllTheProviders = ({
-  children,
-  initialState = {},
-}: AllTheProvidersProps) => {
-  const store = createMockStore(initialState);
+const theme = createTheme();
 
-  return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>{children}</ThemeProvider>
-      </BrowserRouter>
-    </Provider>
-  );
-};
+interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
+  preloadedState?: Partial<RootState>;
+  store?: ReturnType<typeof configureStore<RootState>>;
+}
 
-const customRender = (
+export function renderWithProviders(
   ui: ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'> & { initialState?: any }
-) => {
-  const { initialState, ...renderOptions } = options || {};
+  {
+    preloadedState = {},
+    store = configureStore<RootState>({
+      reducer: {
+        auth: authSlice,
+      },
+      preloadedState: preloadedState as RootState,
+    }),
+    ...renderOptions
+  }: CustomRenderOptions = {}
+) {
+  function Wrapper({ children }: { children: React.ReactNode }) {
+    return (
+      <Provider store={store}>
+        <BrowserRouter>
+          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        </BrowserRouter>
+      </Provider>
+    );
+  }
 
-  return render(ui, {
-    wrapper: props => (
-      <AllTheProviders {...props} initialState={initialState} />
-    ),
-    ...renderOptions,
-  });
-};
+  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
+}
 
-export * from '@testing-library/react';
-export { customRender as render };
-export { createMockStore };
+// Export specific testing library utilities
+export {
+  screen,
+  waitFor,
+  fireEvent,
+  within,
+  cleanup,
+  act,
+} from '@testing-library/react';
+export { renderWithProviders as render };

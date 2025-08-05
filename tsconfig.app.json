@@ -2,39 +2,54 @@
   "compilerOptions": {
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+
     "target": "ES2022",
+
     "useDefineForClassFields": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
+
     "skipLibCheck": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
+
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
+
     "noEmit": true,
     "jsx": "react-jsx",
 
     /* Path mapping */
     "baseUrl": ".",
+
     "paths": {
       "@/*": ["src/*"]
     },
 
-    /* Linting */
+    /* Strict Type Checking */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
-
-    /* Additional type checking */
     "noImplicitAny": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "useUnknownInCatchVariables": true,
+    "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
 
-    /* Testing support */
+    /* Additional Checks */
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "noImplicitThis": true,
+    "noPropertyAccessFromIndexSignature": true,
+
+    /* Type Checking */
     "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
   "include": ["src", "**/*.test.ts", "**/*.test.tsx"],

@@ -1,0 +1,1214 @@
+Department
+
+
+GET
+/api/Department
+Parameters
+Try it out
+No parameters
+
+Responses
+Code	Description	Links
+200	
+Success
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+[
+  {
+    "departmentId": 0,
+    "departmentName": "string",
+    "createdBy": 0,
+    "createdOn": "2025-08-01T05:29:47.832Z",
+    "modifiedBy": "string",
+    "modifiedOn": "2025-08-01T05:29:47.832Z",
+    "isActive": true
+  }
+]
+No links
+Login
+
+
+POST
+/api/Login
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "email": "string",
+  "password": "string",
+  "roleName": "string"
+}
+Responses
+Code	Description	Links
+200	
+Success
+
+No links
+Manager
+
+
+GET
+/api/Manager/{managerId}/Requests
+Parameters
+Cancel
+Name	Description
+managerId *
+integer($int32)
+(path)
+5
+Execute
+Clear
+Responses
+Curl
+
+curl -X 'GET' \
+  'https://localhost:7075/api/Manager/5/Requests' \
+  -H 'accept: text/plain'
+Request URL
+https://localhost:7075/api/Manager/5/Requests
+Server response
+Code	Details
+200	
+Response body
+Download
+[
+  {
+    "travelRequestId": 1,
+    "user": {
+      "userId": 7,
+      "firstName": "shubham",
+      "lastName": "magrade",
+      "department": null
+    },
+    "project": {
+      "projectId": 1,
+      "projectName": "PENTAGON"
+    },
+    "reasonForTravel": "Client Meet",
+    "fromDate": "2024-09-11T00:00:00",
+    "toDate": "2024-09-13T00:00:00",
+    "fromLocation": "INDIA",
+    "toLocation": "LONDON",
+    "status": "Completed",
+    "comments": "string"
+  },
+  {
+    "travelRequestId": 2,
+    "user": {
+      "userId": 7,
+      "firstName": "shubham",
+      "lastName": "magrade",
+      "department": null
+    },
+    "project": {
+      "projectId": 2,
+      "projectName": "DWON"
+    },
+    "reasonForTravel": "Client Meeting",
+    "fromDate": "2024-09-12T00:00:00",
+    "toDate": "2024-09-21T00:00:00",
+    "fromLocation": "mumbai",
+    "toLocation": "nagpur",
+    "status": "Returned to Employee",
+    "comments": "Returning request to employee for more information"
+  },
+  {
+    "travelRequestId": 3,
+    "user": {
+      "userId": 7,
+      "firstName": "shubham",
+      "lastName": "magrade",
+      "department": null
+    },
+    "project": {
+      "projectId": 3,
+      "projectName": "XERXIS"
+    },
+    "reasonForTravel": "Presentation",
+    "fromDate": "2024-09-11T00:00:00",
+    "toDate": "2024-09-13T00:00:00",
+    "fromLocation": "mumbai",
+    "toLocation": "nagpur",
+    "status": "Pending",
+    "comments": null
+  },
+  {
+    "travelRequestId": 4,
+    "user": {
+      "userId": 7,
+      "firstName": "shubham",
+      "lastName": "magrade",
+      "department": null
+    },
+    "project": {
+      "projectId": 1,
+      "projectName": "PENTAGON"
+    },
+    "reasonForTravel": "client meeting",
+    "fromDate": "2024-09-12T00:00:00",
+    "toDate": "2024-09-14T00:00:00",
+    "fromLocation": "LONDON",
+    "toLocation": "BANGLORE",
+    "status": "Pending",
+    "comments": null
+  },
+  {
+    "travelRequestId": 5,
+    "user": {
+      "userId": 9,
+      "firstName": "sushan",
+      "lastName": "parlapally",
+      "department": null
+    },
+    "project": {
+      "projectId": 1,
+      "projectName": "PENTAGON"
+    },
+    "reasonForTravel": "client meet",
+    "fromDate": "2024-09-12T00:00:00",
+    "toDate": "2024-09-14T00:00:00",
+    "fromLocation": "LONDON",
+    "toLocation": "BANGLORE",
+    "status": "Completed",
+    "comments": "Booking confirmed"
+  },
+  {
+    "travelRequestId": 6,
+    "user": {
+      "userId": 9,
+      "firstName": "sushan",
+      "lastName": "parlapally",
+      "department": null
+    },
+    "project": {
+      "projectId": 2,
+      "projectName": "DWON"
+    },
+    "reasonForTravel": "Client visit",
+    "fromDate": "2025-07-31T00:00:00",
+    "toDate": "2025-08-01T00:00:00",
+    "fromLocation": "Nagpur",
+    "toLocation": "Pune",
+    "status": "Pending",
+    "comments": null
+  }
+]
+Response headers
+ content-type: application/json; charset=utf-8 
+ date: Fri,01 Aug 2025 05:22:55 GMT 
+ server: Kestrel 
+Responses
+Code	Description	Links
+200	
+Success
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+[
+  {
+    "travelRequestId": 0,
+    "user": {
+      "userId": 0,
+      "firstName": "string",
+      "lastName": "string",
+      "department": {
+        "departmentId": 0,
+        "departmentName": "string"
+      }
+    },
+    "project": {
+      "projectId": 0,
+      "projectName": "string"
+    },
+    "reasonForTravel": "string",
+    "fromDate": "2025-08-01T05:29:47.849Z",
+    "toDate": "2025-08-01T05:29:47.849Z",
+    "fromLocation": "string",
+    "toLocation": "string",
+    "status": "string",
+    "comments": "string"
+  }
+]
+No links
+
+PUT
+/api/Manager/ApproveRequest/{requestId}
+Parameters
+Try it out
+Name	Description
+requestId *
+integer($int32)
+(path)
+requestId
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "comments": "string"
+}
+Responses
+Code	Description	Links
+200	
+Success
+
+No links
+
+PUT
+/api/Manager/RejectRequest/{requestId}
+Parameters
+Try it out
+Name	Description
+requestId *
+integer($int32)
+(path)
+requestId
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "comments": "string"
+}
+Responses
+Code	Description	Links
+200	
+Success
+
+No links
+Project
+
+Role
+
+
+GET
+/api/Role
+Parameters
+Try it out
+No parameters
+
+Responses
+Code	Description	Links
+200	
+Success
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+[
+  {
+    "roleId": 0,
+    "roleName": "string",
+    "createdBy": 0,
+    "createdOn": "2025-08-01T05:29:47.864Z",
+    "modifiedBy": "string",
+    "modifiedOn": "2025-08-01T05:29:47.864Z",
+    "isActive": true
+  }
+]
+No links
+
+GET
+/api/Role/{id}
+Parameters
+Try it out
+Name	Description
+id *
+integer($int32)
+(path)
+id
+Responses
+Code	Description	Links
+200	
+Success
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "roleId": 0,
+  "roleName": "string",
+  "createdBy": 0,
+  "createdOn": "2025-08-01T05:29:47.868Z",
+  "modifiedBy": "string",
+  "modifiedOn": "2025-08-01T05:29:47.868Z",
+  "isActive": true
+}
+No links
+TravelAdmin
+
+
+GET
+/api/travel-requests
+Parameters
+Try it out
+No parameters
+
+Responses
+Code	Description	Links
+200	
+Success
+
+No links
+
+POST
+/api/travel-requests/{travelRequestId}/book
+Parameters
+Try it out
+Name	Description
+travelRequestId *
+integer($int32)
+(path)
+travelRequestId
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "comments": "string",
+  "ticketUrl": "string"
+}
+Responses
+Code	Description	Links
+200	
+Success
+
+No links
+
+GET
+/api/travel-requests/{travelRequestId}/ticket-pdf
+Parameters
+Try it out
+Name	Description
+travelRequestId *
+integer($int32)
+(path)
+travelRequestId
+Responses
+Code	Description	Links
+200	
+Success
+
+No links
+
+POST
+/api/travel-requests/{travelRequestId}/return-to-employee
+Parameters
+Try it out
+Name	Description
+travelRequestId *
+integer($int32)
+(path)
+travelRequestId
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "comments": "string",
+  "ticketUrl": "string"
+}
+Responses
+Code	Description	Links
+200	
+Success
+
+No links
+
+POST
+/api/travel-requests/{travelRequestId}/close
+Parameters
+Try it out
+Name	Description
+travelRequestId *
+integer($int32)
+(path)
+travelRequestId
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "comments": "string",
+  "ticketUrl": "string"
+}
+Responses
+Code	Description	Links
+200	
+Success
+
+No links
+TravelRequest
+
+
+GET
+/api/TravelRequest
+Parameters
+Cancel
+No parameters
+
+Execute
+Clear
+Responses
+Curl
+
+curl -X 'GET' \
+  'https://localhost:7075/api/TravelRequest' \
+  -H 'accept: text/plain'
+Request URL
+https://localhost:7075/api/TravelRequest
+Server response
+Code	Details
+200	
+Response body
+Download
+{
+  "requests": [
+    {
+      "travelRequestId": 1,
+      "user": {
+        "userId": 7,
+        "firstName": "shubham",
+        "lastName": "magrade",
+        "department": {
+          "departmentId": 1,
+          "departmentName": "IT"
+        }
+      },
+      "project": {
+        "projectId": 1,
+        "projectName": "PENTAGON"
+      },
+      "reasonForTravel": "Client Meet",
+      "fromDate": "2024-09-11T00:00:00",
+      "toDate": "2024-09-13T00:00:00",
+      "fromLocation": "INDIA",
+      "toLocation": "LONDON",
+      "status": "Completed",
+      "comments": "string"
+    },
+    {
+      "travelRequestId": 2,
+      "user": {
+        "userId": 7,
+        "firstName": "shubham",
+        "lastName": "magrade",
+        "department": {
+          "departmentId": 1,
+          "departmentName": "IT"
+        }
+      },
+      "project": {
+        "projectId": 2,
+        "projectName": "DWON"
+      },
+      "reasonForTravel": "Client Meeting",
+      "fromDate": "2024-09-12T00:00:00",
+      "toDate": "2024-09-21T00:00:00",
+      "fromLocation": "mumbai",
+      "toLocation": "nagpur",
+      "status": "Returned to Employee",
+      "comments": "Returning request to employee for more information"
+    },
+    {
+      "travelRequestId": 3,
+      "user": {
+        "userId": 7,
+        "firstName": "shubham",
+        "lastName": "magrade",
+        "department": {
+          "departmentId": 1,
+          "departmentName": "IT"
+        }
+      },
+      "project": {
+        "projectId": 3,
+        "projectName": "XERXIS"
+      },
+      "reasonForTravel": "Presentation",
+      "fromDate": "2024-09-11T00:00:00",
+      "toDate": "2024-09-13T00:00:00",
+      "fromLocation": "mumbai",
+      "toLocation": "nagpur",
+      "status": "Pending",
+      "comments": null
+    },
+    {
+      "travelRequestId": 4,
+      "user": {
+        "userId": 7,
+        "firstName": "shubham",
+        "lastName": "magrade",
+        "department": {
+          "departmentId": 1,
+          "departmentName": "IT"
+        }
+      },
+      "project": {
+        "projectId": 1,
+        "projectName": "PENTAGON"
+      },
+      "reasonForTravel": "client meeting",
+      "fromDate": "2024-09-12T00:00:00",
+      "toDate": "2024-09-14T00:00:00",
+      "fromLocation": "LONDON",
+      "toLocation": "BANGLORE",
+      "status": "Pending",
+      "comments": null
+    },
+    {
+      "travelRequestId": 5,
+      "user": {
+        "userId": 9,
+        "firstName": "sushan",
+        "lastName": "parlapally",
+        "department": {
+          "departmentId": 1,
+          "departmentName": "IT"
+        }
+      },
+      "project": {
+        "projectId": 1,
+        "projectName": "PENTAGON"
+      },
+      "reasonForTravel": "client meet",
+      "fromDate": "2024-09-12T00:00:00",
+      "toDate": "2024-09-14T00:00:00",
+      "fromLocation": "LONDON",
+      "toLocation": "BANGLORE",
+      "status": "Completed",
+      "comments": "Booking confirmed"
+    },
+    {
+      "travelRequestId": 6,
+      "user": {
+        "userId": 9,
+        "firstName": "sushan",
+        "lastName": "parlapally",
+        "department": {
+          "departmentId": 1,
+          "departmentName": "IT"
+        }
+      },
+      "project": {
+        "projectId": 2,
+        "projectName": "DWON"
+      },
+      "reasonForTravel": "Client visit",
+      "fromDate": "2025-07-31T00:00:00",
+      "toDate": "2025-08-01T00:00:00",
+      "fromLocation": "Nagpur",
+      "toLocation": "Pune",
+      "status": "Pending",
+      "comments": null
+    }
+  ]
+}
+Response headers
+ content-type: application/json; charset=utf-8 
+ date: Fri,01 Aug 2025 05:25:33 GMT 
+ server: Kestrel 
+Responses
+Code	Description	Links
+200	
+Success
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "requests": [
+    {
+      "travelRequestId": 0,
+      "user": {
+        "userId": 0,
+        "firstName": "string",
+        "lastName": "string",
+        "department": {
+          "departmentId": 0,
+          "departmentName": "string"
+        }
+      },
+      "project": {
+        "projectId": 0,
+        "projectName": "string"
+      },
+      "reasonForTravel": "string",
+      "fromDate": "2025-08-01T05:29:47.901Z",
+      "toDate": "2025-08-01T05:29:47.901Z",
+      "fromLocation": "string",
+      "toLocation": "string",
+      "status": "string",
+      "comments": "string"
+    }
+  ]
+}
+No links
+
+POST
+/api/TravelRequest
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "travelRequestId": 0,
+  "userId": 0,
+  "userName": {
+    "userId": 0,
+    "firstName": "string",
+    "lastName": "string",
+    "address": "string",
+    "email": "user@example.com",
+    "mobileNum": "string",
+    "password": "string",
+    "roleId": 0,
+    "role": {
+      "roleId": 0,
+      "roleName": "string",
+      "createdBy": 0,
+      "createdOn": "2025-08-01T05:29:47.907Z",
+      "modifiedBy": "string",
+      "modifiedOn": "2025-08-01T05:29:47.907Z",
+      "isActive": true
+    },
+    "departmentId": 0,
+    "department": {
+      "departmentId": 0,
+      "departmentName": "string",
+      "createdBy": 0,
+      "createdOn": "2025-08-01T05:29:47.907Z",
+      "modifiedBy": "string",
+      "modifiedOn": "2025-08-01T05:29:47.907Z",
+      "isActive": true
+    },
+    "managerId": 0,
+    "manager": "string",
+    "createdBy": 0,
+    "createdOn": "2025-08-01T05:29:47.907Z",
+    "modifiedBy": "string",
+    "modifiedOn": "2025-08-01T05:29:47.907Z",
+    "isActive": true
+  },
+  "projectId": 0,
+  "project": {
+    "projectId": 0,
+    "projectName": "string",
+    "travelRequests": [
+      "string"
+    ],
+    "createdBy": 0,
+    "createdOn": "2025-08-01T05:29:47.907Z",
+    "modifiedBy": "string",
+    "modifiedOn": "2025-08-01T05:29:47.907Z",
+    "isActive": true
+  },
+  "departmentId": 0,
+  "department": {
+    "departmentId": 0,
+    "departmentName": "string",
+    "createdBy": 0,
+    "createdOn": "2025-08-01T05:29:47.907Z",
+    "modifiedBy": "string",
+    "modifiedOn": "2025-08-01T05:29:47.907Z",
+    "isActive": true
+  },
+  "reasonForTravel": "string",
+  "fromDate": "2025-08-01T05:29:47.908Z",
+  "toDate": "2025-08-01T05:29:47.908Z",
+  "fromLocation": "string",
+  "toLocation": "string",
+  "comments": "string",
+  "ticketUrl": "string",
+  "status": "string",
+  "createdOn": "2025-08-01T05:29:47.908Z",
+  "modifiedOn": "2025-08-01T05:29:47.908Z",
+  "isActive": true
+}
+Responses
+Code	Description	Links
+200	
+Success
+
+No links
+
+GET
+/api/TravelRequest/user/{userId}
+Parameters
+Try it out
+Name	Description
+userId *
+integer($int32)
+(path)
+userId
+Responses
+Code	Description	Links
+200	
+Success
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+[
+  {
+    "travelRequestId": 0,
+    "user": {
+      "userId": 0,
+      "firstName": "string",
+      "lastName": "string",
+      "department": {
+        "departmentId": 0,
+        "departmentName": "string"
+      }
+    },
+    "project": {
+      "projectId": 0,
+      "projectName": "string"
+    },
+    "reasonForTravel": "string",
+    "fromDate": "2025-08-01T05:29:47.916Z",
+    "toDate": "2025-08-01T05:29:47.916Z",
+    "fromLocation": "string",
+    "toLocation": "string",
+    "status": "string",
+    "comments": "string"
+  }
+]
+No links
+User
+
+
+GET
+/api/User/users
+Parameters
+Try it out
+No parameters
+
+Responses
+Code	Description	Links
+200	
+Success
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+[
+  {
+    "userId": 0,
+    "firstName": "string",
+    "lastName": "string",
+    "address": "string",
+    "email": "user@example.com",
+    "mobileNum": "string",
+    "password": "string",
+    "roleId": 0,
+    "role": {
+      "roleId": 0,
+      "roleName": "string",
+      "createdBy": 0,
+      "createdOn": "2025-08-01T05:29:47.920Z",
+      "modifiedBy": "string",
+      "modifiedOn": "2025-08-01T05:29:47.920Z",
+      "isActive": true
+    },
+    "departmentId": 0,
+    "department": {
+      "departmentId": 0,
+      "departmentName": "string",
+      "createdBy": 0,
+      "createdOn": "2025-08-01T05:29:47.920Z",
+      "modifiedBy": "string",
+      "modifiedOn": "2025-08-01T05:29:47.920Z",
+      "isActive": true
+    },
+    "managerId": 0,
+    "manager": "string",
+    "createdBy": 0,
+    "createdOn": "2025-08-01T05:29:47.920Z",
+    "modifiedBy": "string",
+    "modifiedOn": "2025-08-01T05:29:47.920Z",
+    "isActive": true
+  }
+]
+No links
+
+POST
+/api/User/users
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "userId": 0,
+  "firstName": "string",
+  "lastName": "string",
+  "address": "string",
+  "email": "user@example.com",
+  "mobileNum": "string",
+  "password": "string",
+  "roleId": 0,
+  "role": {
+    "roleId": 0,
+    "roleName": "string",
+    "createdBy": 0,
+    "createdOn": "2025-08-01T05:29:47.928Z",
+    "modifiedBy": "string",
+    "modifiedOn": "2025-08-01T05:29:47.928Z",
+    "isActive": true
+  },
+  "departmentId": 0,
+  "department": {
+    "departmentId": 0,
+    "departmentName": "string",
+    "createdBy": 0,
+    "createdOn": "2025-08-01T05:29:47.928Z",
+    "modifiedBy": "string",
+    "modifiedOn": "2025-08-01T05:29:47.928Z",
+    "isActive": true
+  },
+  "managerId": 0,
+  "manager": "string",
+  "createdBy": 0,
+  "createdOn": "2025-08-01T05:29:47.928Z",
+  "modifiedBy": "string",
+  "modifiedOn": "2025-08-01T05:29:47.929Z",
+  "isActive": true
+}
+Responses
+Code	Description	Links
+200	
+Success
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "userId": 0,
+  "firstName": "string",
+  "lastName": "string",
+  "address": "string",
+  "email": "user@example.com",
+  "mobileNum": "string",
+  "password": "string",
+  "roleId": 0,
+  "role": {
+    "roleId": 0,
+    "roleName": "string",
+    "createdBy": 0,
+    "createdOn": "2025-08-01T05:29:47.932Z",
+    "modifiedBy": "string",
+    "modifiedOn": "2025-08-01T05:29:47.932Z",
+    "isActive": true
+  },
+  "departmentId": 0,
+  "department": {
+    "departmentId": 0,
+    "departmentName": "string",
+    "createdBy": 0,
+    "createdOn": "2025-08-01T05:29:47.932Z",
+    "modifiedBy": "string",
+    "modifiedOn": "2025-08-01T05:29:47.932Z",
+    "isActive": true
+  },
+  "managerId": 0,
+  "manager": "string",
+  "createdBy": 0,
+  "createdOn": "2025-08-01T05:29:47.932Z",
+  "modifiedBy": "string",
+  "modifiedOn": "2025-08-01T05:29:47.932Z",
+  "isActive": true
+}
+No links
+
+PUT
+/api/User/users/{id}
+Parameters
+Try it out
+Name	Description
+id *
+integer($int32)
+(path)
+id
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "userId": 0,
+  "firstName": "string",
+  "lastName": "string",
+  "address": "string",
+  "email": "user@example.com",
+  "mobileNum": "string",
+  "password": "string",
+  "roleId": 0,
+  "role": {
+    "roleId": 0,
+    "roleName": "string",
+    "createdBy": 0,
+    "createdOn": "2025-08-01T05:29:47.941Z",
+    "modifiedBy": "string",
+    "modifiedOn": "2025-08-01T05:29:47.941Z",
+    "isActive": true
+  },
+  "departmentId": 0,
+  "department": {
+    "departmentId": 0,
+    "departmentName": "string",
+    "createdBy": 0,
+    "createdOn": "2025-08-01T05:29:47.941Z",
+    "modifiedBy": "string",
+    "modifiedOn": "2025-08-01T05:29:47.941Z",
+    "isActive": true
+  },
+  "managerId": 0,
+  "manager": "string",
+  "createdBy": 0,
+  "createdOn": "2025-08-01T05:29:47.941Z",
+  "modifiedBy": "string",
+  "modifiedOn": "2025-08-01T05:29:47.941Z",
+  "isActive": true
+}
+Responses
+Code	Description	Links
+200	
+Success
+
+No links
+
+DELETE
+/api/User/users/{id}
+Parameters
+Try it out
+Name	Description
+id *
+integer($int32)
+(path)
+id
+Responses
+Code	Description	Links
+200	
+Success
+
+No links
+
+GET
+/api/User/managers
+Parameters
+Try it out
+No parameters
+
+Responses
+Code	Description	Links
+200	
+Success
+
+No links
+
+Schemas
+BookingDetails{
+comments	string
+nullable: true
+ticketUrl	string
+nullable: true
+}
+CommentDto{
+comments	string
+nullable: true
+}
+DashboardDto{
+requests	[...]
+}
+Department{
+departmentId	integer($int32)
+departmentName*	string
+maxLength: 50
+minLength: 0
+createdBy	integer($int32)
+createdOn	string($date-time)
+modifiedBy	string
+nullable: true
+modifiedOn	string($date-time)
+nullable: true
+isActive	boolean
+}
+DepartmentDto{
+departmentId	integer($int32)
+departmentName	string
+nullable: true
+}
+LoginModel{
+email	string
+nullable: true
+password	string
+nullable: true
+roleName	string
+nullable: true
+}
+Project{
+projectId	integer($int32)
+projectName*	string
+maxLength: 50
+minLength: 0
+travelRequests	[...]
+createdBy	integer($int32)
+createdOn	string($date-time)
+modifiedBy	string
+nullable: true
+modifiedOn	string($date-time)
+nullable: true
+isActive	boolean
+}
+ProjectDto{
+projectId	integer($int32)
+projectName	string
+nullable: true
+}
+Role{
+roleId	integer($int32)
+roleName*	string
+maxLength: 50
+minLength: 0
+createdBy	integer($int32)
+createdOn	string($date-time)
+modifiedBy	string
+nullable: true
+modifiedOn	string($date-time)
+nullable: true
+isActive	boolean
+}
+TravelRequest{
+travelRequestId	integer($int32)
+userId	integer($int32)
+userName	User{...}
+projectId	integer($int32)
+project	Project{...}
+departmentId	integer($int32)
+department	Department{...}
+reasonForTravel	string
+nullable: true
+fromDate	string($date-time)
+toDate	string($date-time)
+fromLocation	string
+nullable: true
+toLocation	string
+nullable: true
+comments	string
+nullable: true
+ticketUrl	string
+nullable: true
+status*	string
+minLength: 1
+createdOn	string($date-time)
+modifiedOn	string($date-time)
+nullable: true
+isActive	boolean
+}
+TravelRequestDto{
+travelRequestId	integer($int32)
+user	UserDto{...}
+project	ProjectDto{...}
+reasonForTravel	string
+nullable: true
+fromDate	string($date-time)
+toDate	string($date-time)
+fromLocation	string
+nullable: true
+toLocation	string
+nullable: true
+status	string
+nullable: true
+comments	string
+nullable: true
+}
+User{
+userId	integer($int32)
+firstName*	string
+maxLength: 50
+minLength: 0
+lastName	string
+maxLength: 50
+minLength: 0
+nullable: true
+address*	string
+maxLength: 100
+minLength: 0
+email*	string($email)
+minLength: 1
+mobileNum*	string($tel)
+minLength: 1
+password*	string
+maxLength: 100
+minLength: 0
+roleId*	integer($int32)
+role	Role{...}
+departmentId*	integer($int32)
+department	Department{...}
+managerId	integer($int32)
+nullable: true
+manager	{...}
+createdBy	integer($int32)
+createdOn	string($date-time)
+modifiedBy	string
+nullable: true
+modifiedOn	string($date-time)
+nullable: true
+isActive	boolean
+}
+UserDto{
+userId	integer($int32)
+firstName	string
+nullable: true
+lastName	string
+nullable: true
+department	DepartmentDto{...}
+}
