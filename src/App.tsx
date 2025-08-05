@@ -37,6 +37,7 @@ const LoadingFallback = () => (
   </Box>
 );
 
+// Updated for deployment - API configuration ready
 function App() {
   return (
     <AuthProvider>
