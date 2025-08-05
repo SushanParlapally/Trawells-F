@@ -35,8 +35,8 @@
     "deploy:production": "npm run build:production && npm run deploy:production:upload",
     "deploy:staging:upload": "echo 'Upload staging build to server'",
     "deploy:production:upload": "echo 'Upload production build to server'",
-    "cleanup:duplicates": "powershell -ExecutionPolicy Bypass -File scripts/cleanup-duplicates.ps1",
-    "cleanup:duplicates:prevent": "powershell -ExecutionPolicy Bypass -File scripts/cleanup-duplicates.ps1 -PreventOnly",
+    "cleanup:duplicates": "echo 'Skipping cleanup for deployment'",
+    "cleanup:duplicates:prevent": "echo 'Skipping cleanup for deployment'",
     "prepare": "husky"
   },
   "dependencies": {
