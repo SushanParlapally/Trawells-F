@@ -51,7 +51,7 @@ const getBaseURL = () => {
 // Create axios instance with base configuration
 export const apiClient = axios.create({
   baseURL: getBaseURL(),
-  timeout: 10000,
+  timeout: 30000, // Increased to 30 seconds for Render.io cold starts
   headers: {
     'Content-Type': 'application/json',
   },
