@@ -165,13 +165,13 @@ class TravelAdminService extends BaseApiService<TravelAdminRequestResponse> {
   }
 
   /**
-   * Generate PDF ticket for a travel request
+   * Generate PDF ticket for a travel request and get Supabase download URL
    * GET: api/travel-requests/{travelRequestId}/ticket-pdf
    */
   async generateTicketPdf(
     travelRequestId: number,
     _config?: ApiRequestConfig
-  ): Promise<Blob> {
+  ): Promise<{ downloadUrl: string; message: string; fileName: string }> {
     try {
       // Get the auth token
       const token = localStorage.getItem('authToken');
@@ -189,7 +189,7 @@ class TravelAdminService extends BaseApiService<TravelAdminRequestResponse> {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/pdf',
+            'Content-Type': 'application/json',
           },
         }
       );
@@ -198,7 +198,8 @@ class TravelAdminService extends BaseApiService<TravelAdminRequestResponse> {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      return response.blob();
+      const result = await response.json();
+      return result;
     } catch (error) {
       throw new Error(
         `Failed to generate PDF: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -232,7 +233,7 @@ class TravelAdminService extends BaseApiService<TravelAdminRequestResponse> {
   async downloadTicketPdf(
     travelRequestId: number,
     token?: string
-  ): Promise<Blob> {
+  ): Promise<{ downloadUrl: string; message: string }> {
     try {
       const baseURL =
         import.meta.env['VITE_API_BASE_URL'] || 'https://trawells.onrender.com';
@@ -248,7 +249,7 @@ class TravelAdminService extends BaseApiService<TravelAdminRequestResponse> {
       const response = await fetch(url, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/pdf',
+          'Content-Type': 'application/json',
         },
       });
 
@@ -256,7 +257,8 @@ class TravelAdminService extends BaseApiService<TravelAdminRequestResponse> {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      return response.blob();
+      const result = await response.json();
+      return result;
     } catch (error) {
       throw new Error(
         `Failed to download PDF: ${error instanceof Error ? error.message : 'Unknown error'}`

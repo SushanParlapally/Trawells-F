@@ -245,23 +245,20 @@ const TravelAdminDashboard: React.FC<TravelAdminDashboardProps> = () => {
   const handleDownloadPdf = async (requestId: number) => {
     try {
       setProcessingDialogOpen(true);
-      const blob = await travelAdminService.generateTicketPdf(requestId);
+      const result = await travelAdminService.generateTicketPdf(requestId);
 
-      // Create download link
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `ticket-${requestId}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      // Open Supabase download URL in new tab
+      if (result.downloadUrl) {
+        window.open(result.downloadUrl, '_blank');
 
-      setProcessingDialogOpen(false);
-      setSuccessMessage(
-        `✅ PDF downloaded successfully!\n\n📄 File saved as: ticket-${requestId}.pdf`
-      );
-      setSuccessDialogOpen(true);
+        setProcessingDialogOpen(false);
+        setSuccessMessage(
+          `✅ PDF generated successfully!\n\n📄 Download URL opened in new tab.\n🔗 Supabase Storage: ${result.message}`
+        );
+        setSuccessDialogOpen(true);
+      } else {
+        throw new Error('No download URL received');
+      }
     } catch (error) {
       console.error('Failed to download PDF:', error);
       setProcessingDialogOpen(false);
