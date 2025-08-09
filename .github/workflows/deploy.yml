@@ -18,7 +18,7 @@ jobs:
   test:
     name: Test and Quality Checks
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -65,7 +65,7 @@ jobs:
     name: End-to-End Tests
     runs-on: ubuntu-latest
     needs: test
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -106,11 +106,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: [test, e2e-test]
     if: github.event_name == 'push'
-    
+
     strategy:
       matrix:
         environment: [staging, production]
-        
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -146,7 +146,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     if: github.event_name == 'push'
-    
+
     permissions:
       contents: read
       packages: write
@@ -194,7 +194,7 @@ jobs:
     needs: [build, docker-build]
     if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
     environment: staging
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -224,7 +224,7 @@ jobs:
     needs: [build, docker-build]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     environment: production
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -259,7 +259,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: docker-build
     if: github.event_name == 'push'
-    
+
     steps:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
