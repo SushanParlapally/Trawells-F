@@ -20,11 +20,8 @@ import QuickActions from './QuickActions';
 import { UserManagement } from './UserManagement';
 import { DepartmentManagement } from './DepartmentManagement';
 import { RoleManagement } from './RoleManagement';
-
 import { travelRequestService } from '../../services/api/travelRequestService';
 import type { DashboardDto } from '../../types';
-// --- FIX: STEP 1 ---
-// Import the AuthService to check the authentication status directly.
 import { AuthService } from '../../services/auth/authService';
 
 interface TabPanelProps {
@@ -57,26 +54,20 @@ const AdminDashboard: React.FC = React.memo(() => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage] = useState('');
 
-  // State for dashboard data - only keep what's actually used
   const [dashboardData, setDashboardData] = useState<DashboardDto | null>(null);
 
   const loadDashboardData = useCallback(async () => {
-    // --- FIX: STEP 2 ---
-    // This guard clause prevents the API call from running if the token is not yet
-    // available, solving the race condition for the entire dashboard.
+    // This guard clause is still important.
     if (!AuthService.isAuthenticated()) {
       console.warn('loadDashboardData aborted: User is not yet authenticated.');
-      setError('Initializing session, please wait...'); // Display a user-friendly message
-      setLoading(false); // Stop the loading spinner
-      return; // Exit the function immediately.
+      setError('Initializing session, please wait...');
+      setLoading(false);
+      return;
     }
-    // --- END OF FIX ---
 
     try {
       setLoading(true);
       setError(null);
-
-      // Only load travel data for system overview
       const travelData = await travelRequestService.getTravelRequests();
       setDashboardData(travelData);
     } catch (err) {
@@ -87,9 +78,21 @@ const AdminDashboard: React.FC = React.memo(() => {
     }
   }, []);
 
+  // --- THIS IS THE FINAL FIX ---
+  // We are replacing the original useEffect with this new version.
   useEffect(() => {
-    loadDashboardData();
+    // This setTimeout pushes the execution of loadDashboardData to the end of the
+    // browser's current task queue. This gives any pending operations, like
+    // localStorage.setItem from the login page, a chance to complete first.
+    // This is the "breather" that solves the race condition.
+    const timer = setTimeout(() => {
+      loadDashboardData();
+    }, 100); // A 100ms delay is robust and safe.
+
+    // This is a React best practice to clean up the timer if the component unmounts.
+    return () => clearTimeout(timer);
   }, [loadDashboardData]);
+  // --- END OF THE FIX ---
 
   const handleTabChange = useCallback(
     (_event: React.SyntheticEvent, newValue: number) => {
