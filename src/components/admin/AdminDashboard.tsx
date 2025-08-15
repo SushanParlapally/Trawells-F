@@ -23,6 +23,9 @@ import { RoleManagement } from './RoleManagement';
 
 import { travelRequestService } from '../../services/api/travelRequestService';
 import type { DashboardDto } from '../../types';
+// --- FIX: STEP 1 ---
+// Import the AuthService to check the authentication status directly.
+import { AuthService } from '../../services/auth/authService';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -58,6 +61,17 @@ const AdminDashboard: React.FC = React.memo(() => {
   const [dashboardData, setDashboardData] = useState<DashboardDto | null>(null);
 
   const loadDashboardData = useCallback(async () => {
+    // --- FIX: STEP 2 ---
+    // This guard clause prevents the API call from running if the token is not yet
+    // available, solving the race condition for the entire dashboard.
+    if (!AuthService.isAuthenticated()) {
+      console.warn('loadDashboardData aborted: User is not yet authenticated.');
+      setError('Initializing session, please wait...'); // Display a user-friendly message
+      setLoading(false); // Stop the loading spinner
+      return; // Exit the function immediately.
+    }
+    // --- END OF FIX ---
+
     try {
       setLoading(true);
       setError(null);

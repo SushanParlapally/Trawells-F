@@ -30,6 +30,7 @@ import type {
 } from '../../services/api/userService';
 import { roleService } from '../../services/api/roleService';
 import { departmentService } from '../../services/api/departmentService';
+import { AuthService } from '../../services/auth/authService';
 import type {
   User,
   Role,
@@ -99,6 +100,17 @@ export const UserManagement: React.FC = () => {
   });
 
   const loadUsers = useCallback(async () => {
+    // Race condition fix: Check authentication before making API calls
+    if (!AuthService.isAuthenticated()) {
+      console.warn('loadUsers aborted: User is not yet authenticated.');
+      setState(prev => ({
+        ...prev,
+        loading: false,
+        error: 'Initializing session, please wait...',
+      }));
+      return;
+    }
+
     try {
       setState(prev => ({ ...prev, loading: true, error: null }));
 
@@ -121,6 +133,17 @@ export const UserManagement: React.FC = () => {
   }, []);
 
   const loadInitialData = useCallback(async () => {
+    // Race condition fix: Check authentication before making API calls
+    if (!AuthService.isAuthenticated()) {
+      console.warn('loadInitialData aborted: User is not yet authenticated.');
+      setState(prev => ({
+        ...prev,
+        loading: false,
+        error: 'Initializing session, please wait...',
+      }));
+      return;
+    }
+
     try {
       setState(prev => ({ ...prev, loading: true, error: null }));
 

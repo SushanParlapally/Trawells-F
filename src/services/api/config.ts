@@ -69,7 +69,13 @@ apiClient.interceptors.request.use(
     if (!isPublicEndpoint) {
       // Get token using AuthService (which handles secure storage)
       const token = AuthService.getToken();
+
+      // Race condition fix: Check if user is authenticated before throwing error
       if (!token) {
+        if (!AuthService.isAuthenticated()) {
+          console.warn('API call attempted before authentication completed');
+          throw new Error('Authentication required');
+        }
         // No token available, reject the request
         throw new Error('Authentication required');
       }
