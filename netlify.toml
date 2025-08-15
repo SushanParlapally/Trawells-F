@@ -1,20 +1,33 @@
+
 [build]
   publish = "dist"
   command = "npm run build"
 
+
 [build.environment]
   NODE_VERSION = "18"
+
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
+
 [[headers]]
   for = "/*"
   [headers.values]
+    # Prevents your site from being embedded in an iframe on other sites.
     X-Frame-Options = "DENY"
+    
+    # Enables the browser's built-in Cross-Site Scripting (XSS) protection.
     X-XSS-Protection = "1; mode=block"
+    
+    # Prevents the browser from trying to guess the content type of a file.
     X-Content-Type-Options = "nosniff"
+    
+    # Controls how much referrer information is sent with requests.
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://trawells.onrender.com;" 
+    
+
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https://trawells.onrender.com;"
