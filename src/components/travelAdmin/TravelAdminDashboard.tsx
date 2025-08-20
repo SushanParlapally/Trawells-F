@@ -37,6 +37,13 @@ import TravelAnalyticsChart from '../common/Charts/TravelAnalyticsChart';
 import TimeSeriesChart from '../common/Charts/TimeSeriesChart';
 import DepartmentAnalyticsChart from '../common/Charts/DepartmentAnalyticsChart';
 import { MainLayout } from '../common/Layout';
+import StatCard from '../common/StatCard';
+import {
+  Assignment as AssignmentIcon,
+  Schedule as ScheduleIcon,
+  CheckCircle as CheckCircleIcon,
+  Timer as TimerIcon,
+} from '@mui/icons-material';
 
 // Use the backend response type - aligned with TravelAdminController response structure
 interface TravelAdminRequestResponse {
@@ -426,50 +433,45 @@ const TravelAdminDashboard: React.FC<TravelAdminDashboardProps> = () => {
         {/* Statistics Cards */}
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', sm: 'row' },
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: '1fr',
+              sm: '1fr 1fr',
+              md: '1fr 1fr 1fr 1fr',
+            },
             gap: 3,
             mb: 3,
           }}
         >
-          <Card sx={{ flex: 1 }}>
-            <CardContent>
-              <Typography color='text.secondary' gutterBottom>
-                Total Requests
-              </Typography>
-              <Typography variant='h4'>{stats.totalRequests}</Typography>
-            </CardContent>
-          </Card>
-          <Card sx={{ flex: 1 }}>
-            <CardContent>
-              <Typography color='text.secondary' gutterBottom>
-                Pending Requests
-              </Typography>
-              <Typography variant='h4' color='warning.main'>
-                {stats.pendingRequests}
-              </Typography>
-            </CardContent>
-          </Card>
-          <Card sx={{ flex: 1 }}>
-            <CardContent>
-              <Typography color='text.secondary' gutterBottom>
-                Completed Today
-              </Typography>
-              <Typography variant='h4' color='success.main'>
-                {stats.completedToday}
-              </Typography>
-            </CardContent>
-          </Card>
-          <Card sx={{ flex: 1 }}>
-            <CardContent>
-              <Typography color='text.secondary' gutterBottom>
-                Avg. Processing Time
-              </Typography>
-              <Typography variant='h4'>
-                {stats.averageProcessingTime}h
-              </Typography>
-            </CardContent>
-          </Card>
+          <StatCard
+            title='Total Requests'
+            value={stats.totalRequests}
+            icon={<AssignmentIcon />}
+            iconColor='primary'
+            info='Total travel requests in the system'
+          />
+          <StatCard
+            title='Pending Requests'
+            value={stats.pendingRequests}
+            icon={<ScheduleIcon />}
+            iconColor='warning'
+            info='Requests awaiting processing'
+          />
+          <StatCard
+            title='Completed Today'
+            value={stats.completedToday}
+            icon={<CheckCircleIcon />}
+            iconColor='success'
+            info='Requests completed today'
+          />
+          <StatCard
+            title='Avg Processing Time'
+            value={stats.averageProcessingTime}
+            icon={<TimerIcon />}
+            iconColor='info'
+            format='time'
+            info='Average time to process requests'
+          />
         </Box>
 
         {/* Charts */}

@@ -34,11 +34,11 @@ import { travelRequestService } from '../../services/api/travelRequestService';
 import { StatusBadge } from './TravelRequestStatusTracker';
 import { TravelRequestCancellation } from './TravelRequestCancellation';
 import {
-  KPICard,
   StatusDistributionChart,
   TimeSeriesChart,
   TrendAnalysisChart,
 } from '../common/Charts';
+import StatCard from '../common/StatCard';
 import type { TravelRequest, RequestStatus, TableColumn } from '../../types';
 
 interface DashboardStats {
@@ -81,6 +81,8 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
+type FetchError = { response?: { status?: number } };
+
 const EmployeeDashboard: React.FC = () => {
   const user = useAppSelector(selectUser);
   const [tabValue, setTabValue] = useState(0);
@@ -104,8 +106,8 @@ const EmployeeDashboard: React.FC = () => {
   );
   const [showHelp, setShowHelp] = useState(() => {
     // Load help preference from localStorage
-    const saved = localStorage.getItem('employee-dashboard-help-shown');
-    return saved ? false : true; // Show help if not previously shown
+    const dismissed = localStorage.getItem('employee-dashboard-help-dismissed');
+    return dismissed !== 'true'; // Show help if not previously dismissed
   });
 
   // Fetch user's travel requests
@@ -178,7 +180,8 @@ const EmployeeDashboard: React.FC = () => {
         }));
 
       setRecentActivities(activities);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as FetchError;
       // Check if it's a 404 error (no requests found) - this is normal for new users
       if (err?.response?.status === 404) {
         // No travel requests found - this is normal for new users
@@ -425,7 +428,17 @@ const EmployeeDashboard: React.FC = () => {
         {/* Help Section */}
         {showHelp && (
           <Grid size={12}>
-            <Alert severity='info' sx={{ mb: 2 }}>
+            <Alert
+              severity='info'
+              sx={{ mb: 2 }}
+              onClose={() => {
+                setShowHelp(false);
+                localStorage.setItem(
+                  'employee-dashboard-help-dismissed',
+                  'true'
+                );
+              }}
+            >
               <Typography variant='h6' gutterBottom>
                 How to use the Travel Desk System
               </Typography>
@@ -469,11 +482,11 @@ const EmployeeDashboard: React.FC = () => {
               {/* Statistics Cards */}
               <Grid container spacing={3}>
                 <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-                  <KPICard
+                  <StatCard
                     title='Total Requests'
                     value={stats.totalRequests}
                     icon={<AssignmentIcon />}
-                    color='primary'
+                    iconColor='primary'
                     loading={loading}
                     trend={{
                       value:
@@ -495,31 +508,31 @@ const EmployeeDashboard: React.FC = () => {
                   />
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-                  <KPICard
+                  <StatCard
                     title='Pending Approval'
                     value={stats.pendingRequests}
                     icon={<HistoryIcon />}
-                    color='warning'
+                    iconColor='warning'
                     loading={loading}
                     info='Requests awaiting manager approval'
                   />
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-                  <KPICard
+                  <StatCard
                     title='Approved'
                     value={stats.approvedRequests}
                     icon={<TrendingUpIcon />}
-                    color='success'
+                    iconColor='success'
                     loading={loading}
                     info='Requests approved and ready for booking'
                   />
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-                  <KPICard
+                  <StatCard
                     title='Avg Processing'
                     value={stats.averageProcessingTime}
                     icon={<FlightIcon />}
-                    color='info'
+                    iconColor='info'
                     loading={loading}
                     format='time'
                     info='Average time from submission to completion'

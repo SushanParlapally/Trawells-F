@@ -6,6 +6,7 @@ import {
 } from '../../store/slices/authSlice';
 import { sessionManager } from '../../services/auth/sessionManager';
 import { AuthService } from '../../services/auth/authService';
+import { AuthContext } from './AuthContext';
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -40,7 +41,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
   }, [isAuthenticated]);
 
-  return <>{children}</>;
+  return (
+    <AuthContext.Provider value={{ isAuthenticated }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;

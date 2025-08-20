@@ -23,12 +23,12 @@ import { selectUser } from '../../store/slices/authSlice';
 import { MainLayout } from '../common/Layout';
 import { managerService } from '../../services/api/managerService';
 import {
-  KPICard,
   StatusDistributionChart,
   TimeSeriesChart,
   DepartmentAnalyticsChart,
   PerformanceMetricsChart,
 } from '../common/Charts';
+import StatCard from '../common/StatCard';
 import ApprovalQueue from './ApprovalQueue';
 import TeamStatistics from './TeamStatistics';
 import type {
@@ -49,8 +49,6 @@ interface TeamStatisticsData {
   thisMonthRequests: number;
   lastMonthRequests: number;
 }
-
-// ActionDialogState removed - not supported by backend
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -78,7 +76,7 @@ const ManagerDashboard: React.FC = () => {
   const user = useAppSelector(selectUser);
   const [tabValue, setTabValue] = useState(0);
 
-  // Simple notification state instead of hook
+  // Notification state
   const [pendingApprovalsCount, setPendingApprovalsCount] = useState(0);
   const [unreadCount] = useState(0);
   const [hasUrgentNotifications] = useState(false);
@@ -101,7 +99,6 @@ const ManagerDashboard: React.FC = () => {
     '30d'
   );
   const [loading, setLoading] = useState(true);
-  // Action dialog state removed - not supported by backend
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
@@ -112,8 +109,6 @@ const ManagerDashboard: React.FC = () => {
     pageSize: 20,
     total: 0,
   });
-
-  // Simple notification function removed - not supported by backend
 
   // Load manager data
   const loadManagerData = useCallback(async () => {
@@ -141,10 +136,6 @@ const ManagerDashboard: React.FC = () => {
   useEffect(() => {
     loadManagerData();
   }, [loadManagerData]);
-
-  // Action handling functions removed - not supported by backend
-
-  // Close action dialog removed - not supported by backend
 
   // Handle tab change
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
@@ -420,11 +411,11 @@ const ManagerDashboard: React.FC = () => {
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
             {/* KPI Cards */}
             <Box sx={{ flex: 1, minWidth: 250 }}>
-              <KPICard
+              <StatCard
                 title='Total Requests'
                 value={statistics.totalRequests}
                 icon={<AssignmentIcon />}
-                color='primary'
+                iconColor='primary'
                 loading={loading}
                 trend={{
                   value:
@@ -448,11 +439,11 @@ const ManagerDashboard: React.FC = () => {
             </Box>
 
             <Box sx={{ flex: 1, minWidth: 250 }}>
-              <KPICard
+              <StatCard
                 title='Pending Approval'
                 value={statistics.pendingRequests}
                 icon={<AssignmentIcon />}
-                color='warning'
+                iconColor='warning'
                 loading={loading}
                 info='Requests awaiting your approval'
                 onClick={() => setTabValue(2)}
@@ -460,11 +451,11 @@ const ManagerDashboard: React.FC = () => {
             </Box>
 
             <Box sx={{ flex: 1, minWidth: 250 }}>
-              <KPICard
+              <StatCard
                 title='Approval Rate'
                 value={statistics.approvalRate}
                 icon={<TrendingUpIcon />}
-                color='success'
+                iconColor='success'
                 loading={loading}
                 format='percentage'
                 info='Percentage of requests approved'
@@ -472,11 +463,11 @@ const ManagerDashboard: React.FC = () => {
             </Box>
 
             <Box sx={{ flex: 1, minWidth: 250 }}>
-              <KPICard
+              <StatCard
                 title='Avg Approval Time'
                 value={statistics.averageApprovalTime}
                 icon={<AssignmentIcon />}
-                color='info'
+                iconColor='info'
                 loading={loading}
                 format='time'
                 info='Average time to approve requests'
@@ -565,8 +556,6 @@ const ManagerDashboard: React.FC = () => {
           </Box>
         </TabPanel>
       </Paper>
-
-      {/* Action Dialog removed - not supported by backend */}
 
       {/* Snackbar for notifications */}
       <Snackbar

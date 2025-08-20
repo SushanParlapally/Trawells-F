@@ -5,7 +5,7 @@ import {
   CardContent,
   Typography,
   Chip,
-  Stack,
+  Grid,
   Tooltip,
   IconButton,
 } from '@mui/material';
@@ -14,11 +14,12 @@ import {
   Warning as WarningIcon,
   Error as ErrorIcon,
   Refresh as RefreshIcon,
-  Storage as DatabaseIcon,
-  Cloud as ApiIcon,
-  Memory as MemoryIcon,
-  CheckCircle,
+  People as PeopleIcon,
+  Business as BusinessIcon,
+  Assignment as ProjectIcon,
+  Flight as RequestIcon,
 } from '@mui/icons-material';
+import StatCard from '../common/StatCard';
 
 interface SystemHealthIndicatorProps {
   usersCount: number;
@@ -98,89 +99,51 @@ const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
           )}
         </Box>
 
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr 1fr', md: '1fr 1fr 1fr 1fr' },
-            gap: 3,
-          }}
-        >
+        <Grid container spacing={3}>
           {/* Users Count */}
-          <Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-              <DatabaseIcon color='action' />
-              <Typography variant='subtitle2'>Users</Typography>
-              {getStatusIcon(usersCount > 0 ? 'healthy' : 'critical')}
-            </Box>
-            <Stack spacing={1}>
-              <Box>
-                <Typography variant='h4' color='primary'>
-                  {usersCount}
-                </Typography>
-                <Typography variant='caption' color='text.secondary'>
-                  Total Users
-                </Typography>
-              </Box>
-            </Stack>
-          </Box>
+          <Grid item xs={12} sm={6} md={3}>
+            <StatCard
+              title='Total Users'
+              value={usersCount}
+              icon={<PeopleIcon />}
+              iconColor='primary'
+              info='Total number of users in the system'
+            />
+          </Grid>
 
           {/* Departments Count */}
-          <Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-              <ApiIcon color='action' />
-              <Typography variant='subtitle2'>Departments</Typography>
-              {getStatusIcon(departmentsCount > 0 ? 'healthy' : 'critical')}
-            </Box>
-            <Stack spacing={1}>
-              <Box>
-                <Typography variant='h4' color='primary'>
-                  {departmentsCount}
-                </Typography>
-                <Typography variant='caption' color='text.secondary'>
-                  Active Departments
-                </Typography>
-              </Box>
-            </Stack>
-          </Box>
+          <Grid item xs={12} sm={6} md={3}>
+            <StatCard
+              title='Departments'
+              value={departmentsCount}
+              icon={<BusinessIcon />}
+              iconColor='info'
+              info='Active departments in the organization'
+            />
+          </Grid>
 
           {/* Projects Count */}
-          <Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-              <MemoryIcon color='action' />
-              <Typography variant='subtitle2'>Projects</Typography>
-              {getStatusIcon(projectsCount > 0 ? 'healthy' : 'warning')}
-            </Box>
-            <Stack spacing={1}>
-              <Box>
-                <Typography variant='h4' color='primary'>
-                  {projectsCount}
-                </Typography>
-                <Typography variant='caption' color='text.secondary'>
-                  Active Projects
-                </Typography>
-              </Box>
-            </Stack>
-          </Box>
+          <Grid item xs={12} sm={6} md={3}>
+            <StatCard
+              title='Projects'
+              value={projectsCount}
+              icon={<ProjectIcon />}
+              iconColor='success'
+              info='Active projects available for travel requests'
+            />
+          </Grid>
 
           {/* Travel Requests Count */}
-          <Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-              <CheckCircle color='action' />
-              <Typography variant='subtitle2'>Requests</Typography>
-              {getStatusIcon('healthy')}
-            </Box>
-            <Stack spacing={1}>
-              <Box>
-                <Typography variant='h4' color='primary'>
-                  {requestsCount}
-                </Typography>
-                <Typography variant='caption' color='text.secondary'>
-                  Travel Requests
-                </Typography>
-              </Box>
-            </Stack>
-          </Box>
-        </Box>
+          <Grid item xs={12} sm={6} md={3}>
+            <StatCard
+              title='Travel Requests'
+              value={requestsCount}
+              icon={<RequestIcon />}
+              iconColor='warning'
+              info='Total travel requests in the system'
+            />
+          </Grid>
+        </Grid>
 
         <Box sx={{ mt: 2, pt: 2, borderTop: 1, borderColor: 'divider' }}>
           <Typography variant='caption' color='text.secondary'>

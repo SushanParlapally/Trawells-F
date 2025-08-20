@@ -237,11 +237,27 @@ const Sidebar: React.FC<SidebarProps> = ({ onItemClick }) => {
             selected={isActive}
             sx={{
               pl: 2 + level * 2,
+              mx: 1,
+              borderRadius: '8px',
+              mb: 0.5,
+              transition: 'all 0.2s ease-in-out',
+              '&:hover': {
+                backgroundColor: 'rgba(0, 123, 255, 0.08)',
+                transform: 'translateX(4px)',
+              },
               '&.Mui-selected': {
                 backgroundColor: 'primary.main',
                 color: 'primary.contrastText',
-                '&: hover': { backgroundColor: 'primary.dark' },
-                '& .MuiListItemIcon-root': { color: 'primary.contrastText' },
+                '&:hover': {
+                  backgroundColor: 'primary.dark',
+                  transform: 'translateX(4px)',
+                },
+                '& .MuiListItemIcon-root': {
+                  color: 'primary.contrastText',
+                },
+                '& .MuiListItemText-primary': {
+                  fontWeight: 600,
+                },
               },
             }}
           >
@@ -307,7 +323,23 @@ const Sidebar: React.FC<SidebarProps> = ({ onItemClick }) => {
       {/* Logout */}
       <List>
         <ListItem disablePadding>
-          <ListItemButton onClick={handleLogout}>
+          <ListItemButton
+            onClick={handleLogout}
+            sx={{
+              mx: 1,
+              borderRadius: '8px',
+              mb: 1,
+              transition: 'all 0.2s ease-in-out',
+              '&:hover': {
+                backgroundColor: 'rgba(220, 53, 69, 0.08)',
+                color: 'error.main',
+                transform: 'translateX(4px)',
+                '& .MuiListItemIcon-root': {
+                  color: 'error.main',
+                },
+              },
+            }}
+          >
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>

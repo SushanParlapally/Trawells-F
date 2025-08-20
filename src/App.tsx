@@ -1,10 +1,14 @@
-import React, { lazy, Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { CircularProgress, Box } from '@mui/material';
 import AuthProvider from './components/auth/AuthProvider';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import NotificationManager from './components/common/NotificationManager';
 
 // Lazy load components for code splitting
+const Homepage = lazy(() => import('./components/common/Homepage'));
 const LoginPage = lazy(() => import('./components/auth/LoginPage'));
 const EmployeeDashboard = lazy(
   () => import('./components/employee/EmployeeDashboard')
@@ -41,9 +45,29 @@ const LoadingFallback = () => (
 function App() {
   return (
     <AuthProvider>
+      <NotificationManager />
+      <ToastContainer
+        position='top-right'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
           {/* Public Routes */}
+          <Route
+            path='/'
+            element={
+              <ProtectedRoute requireAuth={false}>
+                <Homepage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path='/login'
             element={
@@ -104,11 +128,8 @@ function App() {
             }
           />
 
-          {/* Default Route - Redirect to login */}
-          <Route path='/' element={<Navigate to='/login' replace />} />
-
-          {/* Catch all route - Redirect to login */}
-          <Route path='*' element={<Navigate to='/login' replace />} />
+          {/* Catch all route - Redirect to homepage */}
+          <Route path='*' element={<Navigate to='/' replace />} />
         </Routes>
       </Suspense>
     </AuthProvider>

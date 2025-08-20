@@ -23,6 +23,7 @@ import { RoleManagement } from './RoleManagement';
 import { travelRequestService } from '../../services/api/travelRequestService';
 import type { DashboardDto } from '../../types';
 import { AuthService } from '../../services/auth/authService';
+import AuditTrailTable from './AuditTrailTable'; // Import the new component
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -161,6 +162,7 @@ const AdminDashboard: React.FC = React.memo(() => {
               <Tab label='Department Management' />
               <Tab label='Role Management' />
               <Tab label='Quick Actions' />
+              <Tab label='Audit Trail' /> {/* New Tab */}
             </Tabs>
           </Box>
 
@@ -203,6 +205,13 @@ const AdminDashboard: React.FC = React.memo(() => {
           {/* Quick Actions Tab */}
           <TabPanel value={tabValue} index={5}>
             <QuickActions />
+          </TabPanel>
+
+          {/* Audit Trail Tab */}
+          <TabPanel value={tabValue} index={6}>
+            {' '}
+            {/* New TabPanel */}
+            <AuditTrailTable />
           </TabPanel>
         </Paper>
       </Stack>
