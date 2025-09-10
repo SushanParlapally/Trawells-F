@@ -1,7 +1,7 @@
 import * as signalR from '@microsoft/signalr';
 import { toast } from 'react-toastify';
 
-const URL = import.meta.env['VITE_API_BASE_URL'] + '/notificationHub'; // Your SignalR Hub URL
+const URL = import.meta.env.VITE_API_BASE_URL + '/notificationHub'; // Your SignalR Hub URL
 
 class NotificationService {
   private connection: signalR.HubConnection;
