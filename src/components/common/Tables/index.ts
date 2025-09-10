@@ -1,5 +1,5 @@
 // Export all table components
-export { default as DataTable } from './DataTable';
+export { DataTable } from './DataTable';
 export { default as Pagination } from './Pagination';
 export { default as TableToolbar } from './TableToolbar';
 export { default as VirtualizedTable } from './VirtualizedTable';

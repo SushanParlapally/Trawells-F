@@ -77,7 +77,7 @@ const VirtualizedTable = <T extends Record<string, unknown>>({
   // Render cell content
   const renderCell = useCallback(
     (column: TableColumn<T>, record: T, index: number) => {
-      const value = (record as Record<string, unknown>)[column.key];
+      const value = (record as Record<string, unknown>)[column.key as string];
       if (column.render) {
         return column.render(value as string | number | boolean, record, index);
       }
@@ -137,7 +137,7 @@ const VirtualizedTable = <T extends Record<string, unknown>>({
             <TableRow>
               {columns.map(column => (
                 <TableCell
-                  key={column.key}
+                  key={String(column.key)}
                   align={column.align || 'left'}
                   sx={{
                     fontWeight: 600,
@@ -176,7 +176,7 @@ const VirtualizedTable = <T extends Record<string, unknown>>({
                 >
                   {columns.map(column => (
                     <TableCell
-                      key={column.key}
+                      key={String(column.key)}
                       align={column.align || 'left'}
                       sx={{ height: rowHeight }}
                     >

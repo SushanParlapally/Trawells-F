@@ -25,7 +25,7 @@ import {
   CheckCircle as ActivateIcon,
 } from '@mui/icons-material';
 import { departmentService } from '../../services/api/departmentService';
-import DataTable from '../common/Tables/DataTable';
+import { DataTable } from '../common/Tables/DataTable';
 import type {
   Department,
   TableColumn,
