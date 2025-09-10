@@ -17,10 +17,7 @@ import {
   Cancel as CancelIcon,
   Visibility as ViewIcon,
 } from '@mui/icons-material';
-import {
-  TravelRequestForm,
-  type TravelRequestFormData,
-} from './TravelRequestForm';
+import { TravelRequestForm } from './TravelRequestForm';
 import { TravelRequestStatusTracker } from './TravelRequestStatusTracker';
 import type { TravelRequest, RequestStatus } from '../../types';
 
@@ -61,32 +58,29 @@ export const TravelRequestEditor: React.FC<TravelRequestEditorProps> = ({
     setEditState(prev => ({ ...prev, isEditing: false, error: null }));
   }, []);
 
-  const handleSaveEdit = useCallback(
-    async (_formData: TravelRequestFormData) => {
-      setEditState(prev => ({ ...prev, loading: true, error: null }));
+  const handleSaveEdit = useCallback(async () => {
+    setEditState(prev => ({ ...prev, loading: true, error: null }));
 
-      try {
-        // Edit functionality is not available in this system
-        // Users can create new requests instead
-        setEditState({ isEditing: false, loading: false, error: null });
-        onError(
-          'Edit functionality is not available. Please create a new request if needed.'
-        );
-      } catch (error) {
-        const errorMessage =
-          error instanceof Error
-            ? error.message
-            : 'Failed to update travel request';
-        setEditState(prev => ({
-          ...prev,
-          loading: false,
-          error: errorMessage,
-        }));
-        onError(errorMessage);
-      }
-    },
-    [onError]
-  );
+    try {
+      // Edit functionality is not available in this system
+      // Users can create new requests instead
+      setEditState({ isEditing: false, loading: false, error: null });
+      onError(
+        'Edit functionality is not available. Please create a new request if needed.'
+      );
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'Failed to update travel request';
+      setEditState(prev => ({
+        ...prev,
+        loading: false,
+        error: errorMessage,
+      }));
+      onError(errorMessage);
+    }
+  }, [onError]);
 
   const convertToFormData = (
     request: TravelRequest

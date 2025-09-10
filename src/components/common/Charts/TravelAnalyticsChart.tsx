@@ -9,6 +9,7 @@ import {
   InputLabel,
   Stack,
   Chip,
+  SelectChangeEvent,
 } from '@mui/material';
 import {
   BarChart,
@@ -91,13 +92,17 @@ const TravelAnalyticsChart: React.FC<TravelAnalyticsChartProps> = ({
     return tickItem;
   };
 
-  const handleMetricChange = (event: any) => {
+  const handleMetricChange = (
+    event: SelectChangeEvent<keyof typeof metrics>
+  ) => {
     const selectedMetric = event.target.value as keyof typeof metrics;
     setSelectedMetric(selectedMetric);
     onMetricChange?.(selectedMetric);
   };
 
-  const handleTimeRangeChange = (event: any) => {
+  const handleTimeRangeChange = (
+    event: SelectChangeEvent<'7d' | '30d' | '90d' | '1y'>
+  ) => {
     const newRange = event.target.value as '7d' | '30d' | '90d' | '1y';
     setTimeRange(newRange);
     onTimeRangeChange?.(newRange);

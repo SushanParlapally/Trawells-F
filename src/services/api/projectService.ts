@@ -138,28 +138,21 @@ class ProjectService extends BaseApiService<Project> {
   /**
    * Create new project (NOT SUPPORTED BY BACKEND)
    */
-  async createProject(
-    _data: Project,
-    _config?: ApiRequestConfig
-  ): Promise<Project> {
+  async createProject(): Promise<Project> {
     throw new Error('Create project not supported by backend');
   }
 
   /**
    * Update existing project (NOT SUPPORTED BY BACKEND)
    */
-  async updateProject(
-    _id: number,
-    _data: Partial<Project>,
-    _config?: ApiRequestConfig
-  ): Promise<void> {
+  async updateProject(): Promise<void> {
     throw new Error('Update project not supported by backend');
   }
 
   /**
    * Delete project (NOT SUPPORTED BY BACKEND)
    */
-  async deleteProject(_id: number, _config?: ApiRequestConfig): Promise<void> {
+  async deleteProject(): Promise<void> {
     throw new Error('Delete project not supported by backend');
   }
 }

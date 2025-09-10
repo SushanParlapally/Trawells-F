@@ -23,6 +23,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   useTheme,
+  SelectChangeEvent,
 } from '@mui/material';
 import {
   TrendingUp,
@@ -152,12 +153,14 @@ const TrendAnalysisChart: React.FC<TrendAnalysisChartProps> = ({
     return tickItem;
   };
 
-  const handleMetricChange = (event: any) => {
+  const handleMetricChange = (event: SelectChangeEvent<string>) => {
     const selectedMetric = event.target.value as string;
     onMetricChange?.(selectedMetric);
   };
 
-  const handleTimeRangeChange = (event: any) => {
+  const handleTimeRangeChange = (
+    event: SelectChangeEvent<'7d' | '30d' | '90d' | '1y'>
+  ) => {
     const newRange = event.target.value as '7d' | '30d' | '90d' | '1y';
     onTimeRangeChange?.(newRange);
   };

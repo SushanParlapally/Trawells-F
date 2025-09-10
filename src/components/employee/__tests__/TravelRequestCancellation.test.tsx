@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { TravelRequestCancellation } from '../TravelRequestCancellation';
 import { travelRequestService } from '../../../services/api/travelRequestService';
-import type { TravelRequest } from '../../../types';
+import type { TravelRequest, RequestStatus } from '../../../types';
 
 // Mock the travel request service
 jest.mock('../../../services/api/travelRequestService');
@@ -13,7 +13,7 @@ const mockTravelRequestService = travelRequestService as jest.Mocked<
 >;
 
 // Mock travel request data
-const createMockTravelRequest = (status: string): TravelRequest => ({
+const createMockTravelRequest = (status: RequestStatus): TravelRequest => ({
   travelRequestId: 123,
   userId: 1,
   projectId: 1,
@@ -23,7 +23,7 @@ const createMockTravelRequest = (status: string): TravelRequest => ({
   toDate: '2024-01-17',
   fromLocation: 'New York',
   toLocation: 'Los Angeles',
-  status: status as any,
+  status: status,
   createdOn: '2024-01-10',
   isActive: true,
 });

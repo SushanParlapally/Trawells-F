@@ -102,6 +102,7 @@ const StatusDistributionChart: React.FC<StatusDistributionChartProps> = ({
   const total = Object.values(data).reduce((sum, count) => sum + count, 0);
 
   const chartData: StatusData[] = Object.entries(data)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     .filter(([_, count]) => count > 0)
     .map(([status, count]) => ({
       status: status as RequestStatus,

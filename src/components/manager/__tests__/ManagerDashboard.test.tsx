@@ -3,14 +3,14 @@ import { vi } from 'vitest';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import ManagerDashboard from '../ManagerDashboard';
-import { travelRequestService } from '../../../../services/api/travelRequestService';
-import { departmentService } from '../../../../services/api/departmentService';
-import { projectService } from '../../../../services/api/projectService';
+import { travelRequestService } from '../../../services/api/travelRequestService';
+import { departmentService } from '../../../services/api/departmentService';
+import { projectService } from '../../../services/api/projectService';
 
 // Mock services
-vi.mock('../../../../services/api/travelRequestService');
-vi.mock('../../../../services/api/departmentService');
-vi.mock('../../../../services/api/projectService');
+vi.mock('../../../services/api/travelRequestService');
+vi.mock('../../../services/api/departmentService');
+vi.mock('../../../services/api/projectService');
 
 // Mock Redux store
 const mockStore = configureStore({
@@ -27,9 +27,10 @@ const mockStore = configureStore({
   },
 });
 
-const mockTravelRequestService = travelRequestService as any;
-const mockDepartmentService = departmentService as any;
-const mockProjectService = projectService as any;
+const mockTravelRequestService =
+  travelRequestService as typeof travelRequestService;
+const mockDepartmentService = departmentService as typeof departmentService;
+const mockProjectService = projectService as typeof projectService;
 
 const mockTravelRequests = {
   requests: [

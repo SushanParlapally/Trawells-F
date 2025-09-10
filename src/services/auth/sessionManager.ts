@@ -15,8 +15,8 @@ type WarningCallback = (remainingMinutes: number) => void;
 type TimeoutCallback = () => void;
 
 class SessionManager {
-  private sessionTimer: NodeJS.Timeout | null = null;
-  private warningTimer: NodeJS.Timeout | null = null;
+  private sessionTimer: number | null = null;
+  private warningTimer: number | null = null;
   private lastActivity: number = Date.now();
   private warningCallbacks: WarningCallback[] = [];
   private timeoutCallbacks: TimeoutCallback[] = [];

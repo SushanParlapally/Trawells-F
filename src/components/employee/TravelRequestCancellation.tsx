@@ -159,7 +159,7 @@ export const TravelRequestCancellation: React.FC<
       setState(prev => ({ ...prev, loading: false, error: errorMessage }));
       onError(errorMessage);
     }
-  }, [state.reason, onError]);
+  }, [state.reason, onError, request, onCancel]);
 
   if (!isCancellable) {
     return null;

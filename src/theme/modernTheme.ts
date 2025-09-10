@@ -1,52 +1,49 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, alpha } from '@mui/material/styles';
 import { designTokens } from './designTokens';
 
-// Modern theme using design tokens for Travel Desk Management System
+// Modern theme for the "Vibrancy & Air" update of the Travel Desk Management System
 const modernTheme = createTheme({
+  // --- PALETTE ---
+  // Consumes the new, evolved color tokens from designTokens.ts.
   palette: {
     mode: 'light',
     primary: {
-      main: designTokens.colors.blue500,
-      light: designTokens.colors.blue300,
-      dark: designTokens.colors.blue600,
+      main: designTokens.colors.primary500, // Midnight Bloom
+      light: designTokens.colors.primary300,
+      dark: designTokens.colors.primary700,
       contrastText: designTokens.colors.white,
     },
     secondary: {
-      main: designTokens.colors.amber500,
-      light: designTokens.colors.amber300,
-      dark: designTokens.colors.amber600,
-      contrastText: designTokens.colors.black,
+      main: designTokens.colors.accent500, // Solar Flare
+      light: designTokens.colors.accent300,
+      dark: designTokens.colors.accent700,
+      contrastText: designTokens.colors.gray800,
     },
     error: {
       main: designTokens.colors.error500,
-      light: designTokens.colors.error100,
-      dark: designTokens.colors.error700,
     },
     warning: {
       main: designTokens.colors.warning500,
-      light: designTokens.colors.warning100,
-      dark: designTokens.colors.warning700,
     },
     success: {
       main: designTokens.colors.success500,
-      light: designTokens.colors.success100,
-      dark: designTokens.colors.success700,
     },
     info: {
       main: designTokens.colors.info500,
-      light: designTokens.colors.info100,
-      dark: designTokens.colors.info700,
     },
     background: {
-      default: designTokens.colors.gray50,
-      paper: designTokens.colors.white,
+      default: designTokens.colors.gray50, // Alabaster (Corrected)
+      paper: designTokens.colors.white, // Pure White
     },
     text: {
-      primary: designTokens.colors.gray800,
-      secondary: designTokens.colors.gray500,
+      primary: designTokens.colors.gray800, // Slate Gray (Corrected)
+      secondary: designTokens.colors.gray500, // Ash Gray (Corrected)
     },
-    divider: designTokens.colors.gray200,
+    divider: designTokens.colors.gray200, // Cloud Gray
   },
+
+  // --- TYPOGRAPHY, SHAPE, SPACING ---
+  // Inherited directly from your excellent design token structure.
   typography: {
     fontFamily: designTokens.typography.fontFamily.primary,
     h1: {
@@ -96,11 +93,13 @@ const modernTheme = createTheme({
     },
   },
   shape: {
-    borderRadius: parseInt(designTokens.radius.md), // Default border radius for components
+    borderRadius: parseInt(designTokens.radius.md),
   },
-  spacing: 8, // Base spacing unit (8px)
+  spacing: 8,
+
+  // --- COMPONENT OVERRIDES ---
+  // Your professional setup, enhanced with "2025 High-Tech" refinements.
   components: {
-    // Button component overrides
     MuiButton: {
       styleOverrides: {
         root: {
@@ -109,73 +108,46 @@ const modernTheme = createTheme({
           fontWeight: designTokens.typography.fontWeight.medium,
           transition: `all ${designTokens.transitions.duration.normal} ${designTokens.transitions.easing.easeInOut}`,
           '&:hover': {
-            transform: 'translateY(-1px)',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.12)',
+            transform: 'translateY(-2px)',
+            boxShadow: designTokens.shadows.lg,
           },
           '&:active': {
             transform: 'translateY(0)',
           },
         },
         contained: {
-          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+          boxShadow: designTokens.shadows.sm,
           '&:hover': {
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+            boxShadow: designTokens.shadows.md,
           },
         },
+        // NEW "GLOW" EFFECT for primary accent buttons
         containedSecondary: {
-          backgroundColor: '#FFB300',
-          color: '#000000',
           '&:hover': {
-            backgroundColor: '#CC8F00',
-            boxShadow: '0 4px 12px rgba(255, 179, 0, 0.3)',
+            backgroundColor: designTokens.colors.accent600,
+            boxShadow: `0 0 15px 0 ${alpha(designTokens.colors.accent500, 0.6)}`,
           },
         },
-        outlined: {
+        outlinedPrimary: {
           borderWidth: '1.5px',
           '&:hover': {
             borderWidth: '1.5px',
-            backgroundColor: 'rgba(0, 123, 255, 0.04)',
+            backgroundColor: alpha(designTokens.colors.primary500, 0.04),
           },
-        },
-        sizeSmall: {
-          padding: designTokens.components.button.padding.small,
-          fontSize: designTokens.typography.fontSize.xs,
-        },
-        sizeMedium: {
-          padding: designTokens.components.button.padding.medium,
-          fontSize: designTokens.typography.fontSize.sm,
-        },
-        sizeLarge: {
-          padding: designTokens.components.button.padding.large,
-          fontSize: designTokens.typography.fontSize.base,
         },
       },
     },
-
-    // Paper/Card component overrides
     MuiPaper: {
       styleOverrides: {
         root: {
           borderRadius: designTokens.components.card.borderRadius,
           transition: `all ${designTokens.transitions.duration.normal} ${designTokens.transitions.easing.easeInOut}`,
         },
-        elevation0: {
-          backgroundColor: designTokens.colors.white,
-          border: `1px solid ${designTokens.colors.gray200}`,
-        },
-        elevation1: {
-          boxShadow: designTokens.shadows.md,
-        },
-        elevation2: {
-          boxShadow: designTokens.shadows.lg,
-        },
-        elevation3: {
-          boxShadow: designTokens.shadows.xl,
-        },
+        elevation1: { boxShadow: designTokens.shadows.md },
+        elevation2: { boxShadow: designTokens.shadows.lg },
+        elevation3: { boxShadow: designTokens.shadows.xl },
       },
     },
-
-    // Card component overrides
     MuiCard: {
       styleOverrides: {
         root: {
@@ -184,195 +156,169 @@ const modernTheme = createTheme({
           transition: `all ${designTokens.transitions.duration.normal} ${designTokens.transitions.easing.easeInOut}`,
           border: `1px solid ${designTokens.colors.gray200}`,
           '&:hover': {
-            transform: 'translateY(-2px)',
-            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.12)',
-            borderColor: 'rgba(0, 123, 255, 0.2)',
+            transform: 'translateY(-4px)',
+            boxShadow: designTokens.shadows.xl,
+            borderColor: alpha(designTokens.colors.primary500, 0.3),
           },
         },
       },
     },
-
-    // TextField component overrides
     MuiTextField: {
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-root': {
-            borderRadius: '8px',
-            transition: 'all 0.2s ease-in-out',
-            '&:hover': {
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#007BFF',
-              },
+            borderRadius: designTokens.radius.md,
+            transition: `all ${designTokens.transitions.duration.normal} ${designTokens.transitions.easing.easeInOut}`,
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+              borderColor: designTokens.colors.primary500,
             },
-            '&.Mui-focused': {
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderWidth: '2px',
-                borderColor: '#007BFF',
-              },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              borderWidth: '2px',
+              borderColor: designTokens.colors.primary500,
             },
           },
         },
       },
     },
-
-    // Chip component overrides
     MuiChip: {
       styleOverrides: {
         root: {
-          borderRadius: '8px',
-          fontWeight: 500,
-          transition: 'all 0.2s ease-in-out',
-          '&:hover': {
-            transform: 'translateY(-1px)',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-          },
+          borderRadius: designTokens.radius.md,
+          fontWeight: designTokens.typography.fontWeight.medium,
         },
       },
     },
-
-    // AppBar component overrides
     MuiAppBar: {
       styleOverrides: {
         root: {
-          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-          backgroundColor: '#FFFFFF',
-          color: '#212529',
+          // Semi-transparent "glass" effect for the header
+          backgroundColor: alpha(designTokens.colors.white, 0.85),
+          backdropFilter: 'blur(8px)',
+          boxShadow: 'none',
+          borderBottom: `1px solid ${designTokens.colors.gray200}`,
+          color: designTokens.colors.gray800,
         },
       },
     },
-
-    // Drawer component overrides
     MuiDrawer: {
       styleOverrides: {
         paper: {
-          borderRight: '1px solid #E0E0E0',
-          backgroundColor: '#FFFFFF',
+          borderRight: 'none',
+          backgroundColor: designTokens.colors.white,
         },
       },
     },
-
-    // List component overrides
     MuiListItemButton: {
       styleOverrides: {
         root: {
-          borderRadius: '8px',
-          margin: '2px 8px',
-          transition: 'all 0.2s ease-in-out',
+          borderRadius: designTokens.radius.md,
+          margin: `4px ${designTokens.spacing.sm}`,
+          transition: `all ${designTokens.transitions.duration.fast} ${designTokens.transitions.easing.easeInOut}`,
           '&:hover': {
-            backgroundColor: 'rgba(0, 123, 255, 0.08)',
+            backgroundColor: alpha(designTokens.colors.primary500, 0.08),
             transform: 'translateX(4px)',
           },
           '&.Mui-selected': {
-            backgroundColor: '#007BFF',
-            color: '#FFFFFF',
+            backgroundColor: designTokens.colors.primary500,
+            color: designTokens.colors.white,
             '&:hover': {
-              backgroundColor: '#0056B3',
+              backgroundColor: designTokens.colors.primary700,
             },
-            '& .MuiListItemIcon-root': {
-              color: '#FFFFFF',
-            },
-            '& .MuiListItemText-primary': {
-              fontWeight: 600,
+            '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+              color: designTokens.colors.white,
+              fontWeight: designTokens.typography.fontWeight.semibold,
             },
           },
         },
       },
     },
-
-    // Alert component overrides
     MuiAlert: {
       styleOverrides: {
         root: {
-          borderRadius: '8px',
-          fontWeight: 500,
+          borderRadius: designTokens.radius.md,
+          fontWeight: designTokens.typography.fontWeight.medium,
+          border: '1px solid',
         },
         standardSuccess: {
-          backgroundColor: 'rgba(40, 167, 69, 0.1)',
-          color: '#28A745',
-          border: '1px solid rgba(40, 167, 69, 0.2)',
+          backgroundColor: alpha(designTokens.colors.success500, 0.1),
+          borderColor: alpha(designTokens.colors.success500, 0.3),
+          color: designTokens.colors.success500,
         },
         standardError: {
-          backgroundColor: 'rgba(220, 53, 69, 0.1)',
-          color: '#DC3545',
-          border: '1px solid rgba(220, 53, 69, 0.2)',
+          backgroundColor: alpha(designTokens.colors.error500, 0.1),
+          borderColor: alpha(designTokens.colors.error500, 0.3),
+          color: designTokens.colors.error500,
         },
         standardWarning: {
-          backgroundColor: 'rgba(255, 193, 7, 0.1)',
-          color: '#CC8F00',
-          border: '1px solid rgba(255, 193, 7, 0.2)',
+          backgroundColor: alpha(designTokens.colors.warning500, 0.1),
+          borderColor: alpha(designTokens.colors.warning500, 0.3),
+          color: designTokens.colors.warning500,
         },
         standardInfo: {
-          backgroundColor: 'rgba(0, 123, 255, 0.1)',
-          color: '#007BFF',
-          border: '1px solid rgba(0, 123, 255, 0.2)',
+          backgroundColor: alpha(designTokens.colors.info500, 0.1),
+          borderColor: alpha(designTokens.colors.info500, 0.3),
+          color: designTokens.colors.info500,
         },
       },
     },
-
-    // Table component overrides
     MuiTableContainer: {
       styleOverrides: {
         root: {
-          borderRadius: '16px',
-          border: '1px solid #E0E0E0',
+          borderRadius: designTokens.radius.xl,
+          border: `1px solid ${designTokens.colors.gray200}`,
         },
       },
     },
-
     MuiTableHead: {
       styleOverrides: {
         root: {
-          backgroundColor: '#F8F9FA',
+          backgroundColor: designTokens.colors.gray50,
           '& .MuiTableCell-head': {
-            fontWeight: 600,
-            color: '#212529',
-            borderBottom: '2px solid #E0E0E0',
+            fontWeight: designTokens.typography.fontWeight.semibold,
+            color: designTokens.colors.gray800,
           },
         },
       },
     },
-
     MuiTableRow: {
       styleOverrides: {
         root: {
-          transition: 'all 0.2s ease-in-out',
           '&:hover': {
-            backgroundColor: 'rgba(0, 123, 255, 0.04)',
+            backgroundColor: alpha(designTokens.colors.primary500, 0.04),
           },
         },
       },
     },
-
-    // Dialog component overrides
     MuiDialog: {
       styleOverrides: {
+        // NEW "GLASSMORPHISM" EFFECT for modals
         paper: {
-          borderRadius: '16px',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+          borderRadius: designTokens.radius.xl,
+          boxShadow: designTokens.shadows.xl,
+          background: alpha(designTokens.colors.white, 0.8),
+          backdropFilter: 'blur(10px)',
+          border: `1px solid ${alpha(designTokens.colors.white, 0.3)}`,
         },
       },
     },
-
-    // Menu component overrides
     MuiMenu: {
       styleOverrides: {
         paper: {
-          borderRadius: '12px',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
-          border: '1px solid rgba(224, 224, 224, 0.5)',
-          marginTop: '8px',
+          borderRadius: designTokens.radius.lg,
+          boxShadow: designTokens.shadows.lg,
+          border: `1px solid ${designTokens.colors.gray200}`,
+          marginTop: designTokens.spacing.sm,
         },
       },
     },
-
     MuiMenuItem: {
       styleOverrides: {
         root: {
-          borderRadius: '6px',
-          margin: '2px 6px',
-          transition: 'all 0.2s ease-in-out',
+          borderRadius: designTokens.radius.md,
+          margin: `2px ${designTokens.spacing.sm}`,
+          transition: `all ${designTokens.transitions.duration.fast} ${designTokens.transitions.easing.easeInOut}`,
           '&:hover': {
-            backgroundColor: 'rgba(0, 123, 255, 0.08)',
+            backgroundColor: alpha(designTokens.colors.primary500, 0.08),
             transform: 'translateX(2px)',
           },
         },

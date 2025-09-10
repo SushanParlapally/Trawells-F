@@ -52,7 +52,7 @@ class TravelRequestService extends BaseApiService<TravelRequest> {
     config?: ApiRequestConfig
   ): Promise<TravelRequest> {
     // Transform the data to PascalCase for C# backend compatibility
-    const transformedData = toPascalCase(data) as TravelRequestCreateData;
+    const transformedData = toPascalCase(data);
     return this.post<TravelRequest, TravelRequestCreateData>(
       '',
       transformedData,
@@ -63,21 +63,14 @@ class TravelRequestService extends BaseApiService<TravelRequest> {
   /**
    * Update existing travel request (NOT SUPPORTED BY BACKEND)
    */
-  async updateTravelRequest(
-    _id: number,
-    _data: Partial<TravelRequest>,
-    _config?: ApiRequestConfig
-  ): Promise<void> {
+  async updateTravelRequest(): Promise<void> {
     throw new Error('Update travel request not supported by backend');
   }
 
   /**
    * Delete travel request (NOT SUPPORTED BY BACKEND)
    */
-  async deleteTravelRequest(
-    _id: number,
-    _config?: ApiRequestConfig
-  ): Promise<void> {
+  async deleteTravelRequest(): Promise<void> {
     throw new Error('Delete travel request not supported by backend');
   }
 
@@ -101,7 +94,6 @@ class TravelRequestService extends BaseApiService<TravelRequest> {
     config?: ApiRequestConfig
   ): Promise<TravelRequest[]> {
     try {
-      // Use apiClient directly to bypass baseService error handling for 404s
       const response = await apiClient.get<TravelRequestDto[]>(
         `${this.baseUrl}/user/${userId}`,
         config
@@ -147,15 +139,21 @@ class TravelRequestService extends BaseApiService<TravelRequest> {
         status: dto.status,
         comments: dto.comments,
       })) as TravelRequest[];
-    } catch (error: any) {
-      // If it's a 404 error (no requests found), return empty array silently
-      if (error?.response?.status === 404) {
+    } catch (error: unknown) {
+      // Changed from any to unknown
+      if (
+        error instanceof Error &&
+        'response' in error &&
+        typeof error.response === 'object' &&
+        error.response &&
+        'status' in error.response &&
+        error.response.status === 404
+      ) {
         console.log(
           '✅ getByUserId: Handling 404 silently, returning empty array'
         );
         return [];
       }
-      // Re-throw other errors
       console.log('❌ getByUserId: Re-throwing non-404 error:', error);
       throw error;
     }
@@ -179,64 +177,42 @@ class TravelRequestService extends BaseApiService<TravelRequest> {
   /**
    * Get travel request by ID (NOT AVAILABLE)
    */
-  override async getById(
-    _id: number,
-    _config?: ApiRequestConfig
-  ): Promise<TravelRequest> {
+  override async getById(): Promise<TravelRequest> {
     throw new Error('Individual request loading is not available');
   }
 
   /**
    * Update travel request (NOT AVAILABLE)
    */
-  override async update(
-    _id: number,
-    _data: Partial<TravelRequest>,
-    _config?: ApiRequestConfig
-  ): Promise<void> {
+  override async update(): Promise<void> {
     throw new Error('Edit functionality is not available');
   }
 
   /**
    * Cancel travel request (NOT AVAILABLE)
    */
-  async cancel(
-    _id: number,
-    _reason: string,
-    _config?: ApiRequestConfig
-  ): Promise<TravelRequest> {
+  async cancel(): Promise<TravelRequest> {
     throw new Error('Cancel functionality is not available');
   }
 
   /**
    * Resubmit travel request (NOT AVAILABLE)
    */
-  async resubmit(
-    _id: number,
-    _data: TravelRequestCreateData,
-    _config?: ApiRequestConfig
-  ): Promise<TravelRequest> {
+  async resubmit(): Promise<TravelRequest> {
     throw new Error('Resubmit functionality is not available');
   }
 
   /**
    * Take action on travel request (NOT AVAILABLE)
    */
-  async takeAction(
-    _id: number,
-    _data: { action: string; comments?: string },
-    _config?: ApiRequestConfig
-  ): Promise<TravelRequest> {
+  async takeAction(): Promise<TravelRequest> {
     throw new Error('Action functionality is not available');
   }
 
   /**
    * Get travel requests by manager ID (NOT AVAILABLE)
    */
-  async getByManagerId(
-    _managerId: number,
-    _config?: ApiRequestConfig
-  ): Promise<TravelRequest[]> {
+  async getByManagerId(): Promise<TravelRequest[]> {
     throw new Error('Manager-specific requests are not available');
   }
 }

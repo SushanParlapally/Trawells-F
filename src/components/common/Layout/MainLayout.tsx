@@ -29,7 +29,8 @@ import {
   Person as PersonIcon,
   Logout as LogoutIcon,
 } from '@mui/icons-material';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../../../hooks/redux';
 import { useNavigate } from 'react-router-dom';
 import { logoutUser } from '../../../store/slices/authSlice';
 import type { RootState } from '../../../store';
@@ -54,7 +55,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const { user } = useSelector((state: RootState) => state.auth);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
@@ -240,7 +241,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         component='main'
         sx={{
           flexGrow: 1,
-          p: 3,
+          p: 4,
           width: { md: `calc(100% - ${desktopOpen ? DRAWER_WIDTH : 0}px)` },
           transition: theme.transitions.create('width', {
             easing: theme.transitions.easing.sharp,

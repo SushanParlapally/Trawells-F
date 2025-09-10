@@ -388,7 +388,7 @@ const EmployeeDashboard: React.FC = () => {
       <Grid container spacing={3}>
         {/* Welcome Section */}
         <Grid size={12}>
-          <Paper sx={{ p: 3, mb: 3 }}>
+          <Paper sx={{ p: 3, mb: 3, mt: 4 }}>
             <Box
               display='flex'
               justifyContent='space-between'
@@ -413,6 +413,7 @@ const EmployeeDashboard: React.FC = () => {
                 </Button>
                 <Button
                   variant='contained'
+                  color='secondary'
                   size='large'
                   startIcon={<AddIcon />}
                   onClick={handleCreateRequest}
@@ -424,43 +425,6 @@ const EmployeeDashboard: React.FC = () => {
             </Box>
           </Paper>
         </Grid>
-
-        {/* Help Section */}
-        {showHelp && (
-          <Grid size={12}>
-            <Alert
-              severity='info'
-              sx={{ mb: 2 }}
-              onClose={() => {
-                setShowHelp(false);
-                localStorage.setItem(
-                  'employee-dashboard-help-dismissed',
-                  'true'
-                );
-              }}
-            >
-              <Typography variant='h6' gutterBottom>
-                How to use the Travel Desk System
-              </Typography>
-              <Typography variant='body2' paragraph>
-                • <strong>Create Requests:</strong> Click "New Travel Request"
-                to submit a new travel request
-              </Typography>
-              <Typography variant='body2' paragraph>
-                • <strong>Track Status:</strong> View your request status in the
-                History tab
-              </Typography>
-              <Typography variant='body2' paragraph>
-                • <strong>Analytics:</strong> See your request trends and
-                statistics in the Analytics tab
-              </Typography>
-              <Typography variant='body2' paragraph>
-                • <strong>Note:</strong> Edit and cancel functions are not
-                available. Create new requests if needed.
-              </Typography>
-            </Alert>
-          </Grid>
-        )}
 
         {/* Dashboard Tabs */}
         <Grid size={12}>
@@ -541,52 +505,7 @@ const EmployeeDashboard: React.FC = () => {
               </Grid>
 
               {/* Quick Actions */}
-              <Grid container spacing={3} sx={{ mt: 2 }}>
-                <Grid size={{ xs: 12, md: 8 }}>
-                  <Card>
-                    <CardContent>
-                      <Typography variant='h6' gutterBottom>
-                        Quick Actions
-                      </Typography>
-                      <Grid container spacing={2}>
-                        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-                          <Button
-                            fullWidth
-                            variant='outlined'
-                            startIcon={<AddIcon />}
-                            onClick={handleCreateRequest}
-                            sx={{ py: 2 }}
-                          >
-                            New Request
-                          </Button>
-                        </Grid>
-                        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-                          <Button
-                            fullWidth
-                            variant='outlined'
-                            startIcon={<HistoryIcon />}
-                            onClick={() => setTabValue(2)}
-                            sx={{ py: 2 }}
-                          >
-                            View History
-                          </Button>
-                        </Grid>
-                        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-                          <Button
-                            fullWidth
-                            variant='outlined'
-                            startIcon={<FlightIcon />}
-                            sx={{ py: 2 }}
-                          >
-                            Track Bookings
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    </CardContent>
-                  </Card>
-                </Grid>
-
-                {/* Recent Activities */}
+              <Grid container spacing={3} sx={{ mt: 4 }}>
                 <Grid size={{ xs: 12, md: 4 }}>
                   <Card>
                     <CardContent>

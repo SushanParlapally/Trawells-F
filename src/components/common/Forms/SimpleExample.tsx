@@ -35,7 +35,7 @@ export const SimpleFormExample = () => {
     },
   });
 
-  const onSubmit = (_data: SimpleFormData) => {
+  const onSubmit = () => {
     // Form submission logic would go here
     // console.log('Form submitted: ', data);
   };

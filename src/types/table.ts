@@ -6,14 +6,18 @@ export interface TableProps<T> {
   columns: TableColumn<T>[];
   data: T[];
   loading?: boolean;
-  pagination?: PaginationConfig;
+  pagination?: {
+    page: number;
+    pageSize: number;
+    total: number;
+  };
   onPaginationChange?: (page: number, pageSize: number) => void;
   onSort?: (sortConfig: SortConfig) => void;
   searchable?: boolean;
   searchPlaceholder?: string;
   exportable?: boolean;
   exportFileName?: string;
-  rowKey: string;
+  rowKey: keyof T;
   selectable?: boolean;
   selectedRows?: string[] | number[];
   onSelectionChange?: (selectedRows: string[] | number[]) => void;
@@ -21,7 +25,7 @@ export interface TableProps<T> {
 }
 
 export interface TableColumn<T> {
-  key: string;
+  key: keyof T;
   title: React.ReactNode;
   sortable?: boolean;
   width?: number;

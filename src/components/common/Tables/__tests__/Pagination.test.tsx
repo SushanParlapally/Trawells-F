@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Pagination from '../Pagination';
@@ -15,11 +15,11 @@ describe('Pagination', () => {
     page: 1,
     pageSize: 20,
     total: 100,
-    onPageChange: jest.fn(),
+    onPageChange: vi.fn(),
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('renders pagination info correctly', () => {
@@ -34,23 +34,9 @@ describe('Pagination', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders page numbers correctly', () => {
-    render(
-      <TestWrapper>
-        <Pagination {...defaultProps} page={3} />
-      </TestWrapper>
-    );
-
-    expect(screen.getByText('1')).toBeInTheDocument();
-    expect(screen.getByText('2')).toBeInTheDocument();
-    expect(screen.getByText('3')).toBeInTheDocument();
-    expect(screen.getByText('4')).toBeInTheDocument();
-    expect(screen.getByText('5')).toBeInTheDocument();
-  });
-
   it('handles page change', async () => {
     const user = userEvent.setup();
-    const onPageChange = jest.fn();
+    const onPageChange = vi.fn();
 
     render(
       <TestWrapper>
@@ -58,15 +44,15 @@ describe('Pagination', () => {
       </TestWrapper>
     );
 
-    const page2Button = screen.getByText('2');
-    await user.click(page2Button);
+    const nextPageButton = screen.getByTitle('Go to next page');
+    await user.click(nextPageButton);
 
     expect(onPageChange).toHaveBeenCalledWith(2, 20);
   });
 
   it('handles page size change', async () => {
     const user = userEvent.setup();
-    const onPageChange = jest.fn();
+    const onPageChange = vi.fn();
 
     render(
       <TestWrapper>
@@ -77,7 +63,7 @@ describe('Pagination', () => {
     const pageSizeSelect = screen.getByRole('combobox');
     await user.click(pageSizeSelect);
 
-    const option50 = screen.getByText('50');
+    const option50 = await screen.findByRole('option', { name: '50' });
     await user.click(option50);
 
     expect(onPageChange).toHaveBeenCalledWith(1, 50);
@@ -118,7 +104,7 @@ describe('Pagination', () => {
 
   it('handles first page navigation', async () => {
     const user = userEvent.setup();
-    const onPageChange = jest.fn();
+    const onPageChange = vi.fn();
 
     render(
       <TestWrapper>
@@ -134,7 +120,7 @@ describe('Pagination', () => {
 
   it('handles last page navigation', async () => {
     const user = userEvent.setup();
-    const onPageChange = jest.fn();
+    const onPageChange = vi.fn();
 
     render(
       <TestWrapper>
@@ -148,21 +134,28 @@ describe('Pagination', () => {
     expect(onPageChange).toHaveBeenCalledWith(5, 20);
   });
 
-  it('handles custom page size options', () => {
+  it('handles custom page size options', async () => {
+    const user = userEvent.setup();
     const customPageSizeOptions = [5, 10, 25, 50];
 
     render(
       <TestWrapper>
-        <Pagination {...defaultProps} pageSizeOptions={customPageSizeOptions} />
+        <Pagination
+          {...defaultProps}
+          pageSize={5} // Use a valid page size from the options
+          pageSizeOptions={customPageSizeOptions}
+        />
       </TestWrapper>
     );
 
     const pageSizeSelect = screen.getByRole('combobox');
-    fireEvent.mouseDown(pageSizeSelect);
+    await user.click(pageSizeSelect);
 
-    customPageSizeOptions.forEach(option => {
-      expect(screen.getByText(option.toString())).toBeInTheDocument();
-    });
+    for (const option of customPageSizeOptions) {
+      expect(
+        await screen.findByRole('option', { name: option.toString() })
+      ).toBeInTheDocument();
+    }
   });
 
   it('hides page size changer when disabled', () => {

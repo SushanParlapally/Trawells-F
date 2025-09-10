@@ -1,3 +1,5 @@
+process.env.VITE_API_URL = 'http://localhost:3000';
+
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 

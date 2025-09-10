@@ -137,42 +137,28 @@ class DepartmentService extends BaseApiService<Department> {
   /**
    * Create new department (NOT SUPPORTED BY BACKEND)
    */
-  async createDepartment(
-    _data: Department,
-    _config?: ApiRequestConfig
-  ): Promise<Department> {
+  async createDepartment(): Promise<Department> {
     throw new Error('Create department not supported by backend');
   }
 
   /**
    * Update existing department (NOT SUPPORTED BY BACKEND)
    */
-  async updateDepartment(
-    _id: number,
-    _data: Partial<Department>,
-    _config?: ApiRequestConfig
-  ): Promise<void> {
+  async updateDepartment(): Promise<void> {
     throw new Error('Update department not supported by backend');
   }
 
   /**
    * Delete department (NOT SUPPORTED BY BACKEND)
    */
-  async deleteDepartment(
-    _id: number,
-    _config?: ApiRequestConfig
-  ): Promise<void> {
+  async deleteDepartment(): Promise<void> {
     throw new Error('Delete department not supported by backend');
   }
 
   /**
    * Toggle department status (NOT SUPPORTED BY BACKEND)
    */
-  async toggleStatus(
-    _departmentId: number,
-    _isActive: boolean,
-    _config?: ApiRequestConfig
-  ): Promise<void> {
+  async toggleStatus(): Promise<void> {
     throw new Error('Toggle department status not supported by backend');
   }
 }

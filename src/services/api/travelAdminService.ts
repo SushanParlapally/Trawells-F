@@ -169,8 +169,7 @@ class TravelAdminService extends BaseApiService<TravelAdminRequestResponse> {
    * GET: api/travel-requests/{travelRequestId}/ticket-pdf
    */
   async generateTicketPdf(
-    travelRequestId: number,
-    _config?: ApiRequestConfig
+    travelRequestId: number
   ): Promise<{ downloadUrl: string; message: string; fileName: string }> {
     try {
       // Get the auth token

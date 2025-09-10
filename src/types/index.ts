@@ -47,21 +47,6 @@ export interface AuthState {
 // User roles (matches backend Role.cs RoleName values)
 export type UserRole = 'Admin' | 'TravelAdmin' | 'Manager' | 'Employee';
 
-// API Response types
-export interface ApiResponse<T> {
-  data: T;
-  message?: string;
-  success: boolean;
-}
-
-export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  page: number;
-  pageSize: number;
-  totalPages: number;
-}
-
 // Department types aligned with backend Department.cs
 export interface Department {
   departmentId: number;
@@ -137,7 +122,7 @@ export interface RoleUpdateData {
 }
 
 // Travel Request types (matches backend DTO structure exactly)
-export interface TravelRequest {
+export interface TravelRequest extends Record<string, unknown> {
   travelRequestId: number;
   user: User; // Matches backend DTO structure
   project: Project; // Matches backend DTO structure
@@ -164,7 +149,7 @@ export type RequestStatus =
   | 'Completed';
 
 // Travel Request DTOs for API responses (matches backend DTOs exactly)
-export interface TravelRequestDto extends Record<string, unknown> {
+export interface TravelRequestDto {
   travelRequestId: number;
   user: UserDto;
   project: ProjectDto;
@@ -200,6 +185,11 @@ export interface RoleDto {
 }
 
 export interface DashboardDto {
+  totalRequests: number;
+  pendingRequests: number;
+  totalUsers: number;
+  totalDepartments: number;
+  totalProjects: number;
   requests: TravelRequestDto[];
 }
 

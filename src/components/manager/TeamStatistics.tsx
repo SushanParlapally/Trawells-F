@@ -1,3 +1,4 @@
+/// <reference lib="dom" />
 import React from 'react';
 import {
   Card,
@@ -16,7 +17,7 @@ import {
   Info as InfoIcon,
 } from '@mui/icons-material';
 
-interface TeamStatistics {
+interface ITeamStatistics {
   totalRequests: number;
   pendingRequests: number;
   approvedRequests: number;
@@ -26,7 +27,7 @@ interface TeamStatistics {
 }
 
 interface TeamStatisticsProps {
-  statistics: TeamStatistics;
+  statistics: ITeamStatistics;
   loading?: boolean;
 }
 

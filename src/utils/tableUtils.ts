@@ -145,10 +145,7 @@ export function exportToCSV<T>(
 /**
  * Format cell value for display
  */
-export function formatCellValue(
-  value: unknown,
-  _column: TableColumn<unknown>
-): string {
+export function formatCellValue(value: unknown): string {
   if (value === null || value === undefined) {
     return '';
   }

@@ -6,6 +6,11 @@
     "plugin:react-hooks/recommended",
     "plugin:prettier/recommended"
   ],
+  "settings": {
+    "react": {
+      "version": "18.2.0"
+    }
+  },
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint", "react", "react-hooks", "prettier"],
   "root": true,

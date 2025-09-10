@@ -75,7 +75,7 @@ export const ReportGenerator: React.FC<ReportGeneratorProps> = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: yupResolver(validationSchema) as any,
+    resolver: yupResolver(validationSchema),
     defaultValues: {
       startDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
       endDate: new Date(),
@@ -152,8 +152,6 @@ export const ReportGenerator: React.FC<ReportGeneratorProps> = () => {
     } catch (err) {
       console.error('Error generating report:', err);
       setError('Failed to generate report. Please try again.');
-    } finally {
-      setLoading(false);
     }
   };
 

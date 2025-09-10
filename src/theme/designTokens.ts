@@ -1,73 +1,57 @@
 /**
  * Design Tokens - Single source of truth for all design values
- * Following the design token methodology for scalable design systems
+ * Evolved for the "Vibrancy & Air" / "High-Tech 2025" update.
  */
 
-// Color Tokens
+// --- COLOR TOKENS ---
+// This is the core of the new visual identity.
 export const colorTokens = {
-  // Primary Colors
-  blue50: '#E3F2FD',
-  blue100: '#BBDEFB',
-  blue200: '#90CAF9',
-  blue300: '#64B5F6',
-  blue400: '#42A5F5',
-  blue500: '#007BFF', // Primary
-  blue600: '#0056B3',
-  blue700: '#0D47A1',
-  blue800: '#1565C0',
-  blue900: '#0D47A1',
+  // NEW PRIMARY: A vibrant, modern purple ("Midnight Bloom")
+  primary50: '#EDE7F6',
+  primary100: '#D1C4E9',
+  primary200: '#B39DDB',
+  primary300: '#9575CD',
+  primary400: '#7E57C2',
+  primary500: '#6A5ACD', // Midnight Bloom (Your new primary.main)
+  primary600: '#5E35B1',
+  primary700: '#512DA8',
+  primary800: '#4527A0',
+  primary900: '#311B92',
 
-  // Secondary Colors (Amber)
-  amber50: '#FFF8E1',
-  amber100: '#FFECB3',
-  amber200: '#FFE082',
-  amber300: '#FFD54F',
-  amber400: '#FFCC02',
-  amber500: '#FFB300', // Secondary
-  amber600: '#CC8F00',
-  amber700: '#FF8F00',
-  amber800: '#FF6F00',
-  amber900: '#E65100',
+  // NEW ACCENT: A confident, energetic gold ("Solar Flare")
+  accent50: '#FFFDE7',
+  accent100: '#FFF9C4',
+  accent200: '#FFF59D',
+  accent300: '#FFF176',
+  accent400: '#FFEE58',
+  accent500: '#FFD700', // Solar Flare (Your new secondary.main / accent)
+  accent600: '#FBC02D',
+  accent700: '#FFA000',
+  accent800: '#FF8F00',
+  accent900: '#FF6F00',
 
-  // Semantic Colors
-  success50: '#E8F5E8',
-  success100: '#C8E6C9',
-  success500: '#28A745',
-  success600: '#1E7E34',
-  success700: '#155724',
+  // Semantic Colors (Refined for better harmony)
+  success500: '#2E8B57', // Forest Green
+  warning500: '#FFBF00', // Amber
+  error500: '#DC143C', // Crimson Red
+  info500: '#007BFF', // A standard, clear blue for info alerts
 
-  warning50: '#FFF3CD',
-  warning100: '#FFE69C',
-  warning500: '#FFC107',
-  warning600: '#E0A800',
-  warning700: '#B68C00',
-
-  error50: '#FFEBEE',
-  error100: '#FFCDD2',
-  error500: '#DC3545',
-  error600: '#C82333',
-  error700: '#A71E2A',
-
-  info50: '#E1F5FE',
-  info100: '#B3E5FC',
-  info500: '#17A2B8',
-  info600: '#138496',
-  info700: '#0C5460',
-
-  // Neutral Colors
-  white: '#FFFFFF',
-  gray50: '#F8F9FA',
+  // Neutral Colors (Updated for Vibrancy & Air)
+  white: '#FFFFFF', // Pure White
+  gray50: '#F7F7F7', // Alabaster
   gray100: '#F1F3F4',
-  gray200: '#E0E0E0',
+  gray200: '#E0E0E0', // Cloud Gray
   gray300: '#DADCE0',
   gray400: '#9AA0A6',
-  gray500: '#6C757D',
+  gray500: '#666666', // Ash Gray
   gray600: '#5F6368',
   gray700: '#3C4043',
-  gray800: '#212529',
+  gray800: '#333333', // Slate Gray
   gray900: '#1A1A1A',
   black: '#000000',
 } as const;
+
+// --- All other token categories below are excellent and require no changes ---
 
 // Typography Tokens
 export const typographyTokens = {

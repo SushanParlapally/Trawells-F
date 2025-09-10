@@ -11,11 +11,6 @@ import {
   DialogActions,
   Alert,
   Chip,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-  ListItemSecondaryAction,
   IconButton,
   Tooltip,
   FormControl,
@@ -24,13 +19,7 @@ import {
   MenuItem,
   TextField,
 } from '@mui/material';
-import {
-  CheckCircle,
-  Visibility,
-  Search,
-  Flight,
-  Reply,
-} from '@mui/icons-material';
+import { Visibility, Search, Flight, Reply } from '@mui/icons-material';
 import { travelAdminService } from '../../services/api/travelAdminService';
 import PerformanceMetricsChart from '../common/Charts/PerformanceMetricsChart';
 import TravelAnalyticsChart from '../common/Charts/TravelAnalyticsChart';
@@ -44,6 +33,8 @@ import {
   CheckCircle as CheckCircleIcon,
   Timer as TimerIcon,
 } from '@mui/icons-material';
+import { DataTable } from '../common/Tables';
+import type { TableColumn } from '../../types';
 
 // Use the backend response type - aligned with TravelAdminController response structure
 interface TravelAdminRequestResponse {
@@ -309,7 +300,16 @@ const TravelAdminDashboard: React.FC<TravelAdminDashboardProps> = () => {
       const dateToShow = r.fromDate;
       const createdDate = dateToShow ? new Date(dateToShow) : new Date();
       const today = new Date();
-      return createdDate >= today && r.status === 'completed';
+      return (
+        createdDate.toDateString() === today.toDateString() &&
+        r.status === 'completed'
+      );
+    }).length,
+    newRequestsToday: requests.filter(r => {
+      const dateToShow = r.fromDate;
+      const createdDate = dateToShow ? new Date(dateToShow) : new Date();
+      const today = new Date();
+      return createdDate.toDateString() === today.toDateString();
     }).length,
     pendingBooking: requests.filter(r => r.status === 'approved').length,
   };
@@ -321,6 +321,131 @@ const TravelAdminDashboard: React.FC<TravelAdminDashboardProps> = () => {
 
   // Get unique statuses
   const statuses = Array.from(new Set(requests.map(r => r.status)));
+
+  const columns: TableColumn<TravelAdminRequestResponse>[] = [
+    {
+      key: 'travelRequestId',
+      title: 'Request ID',
+      width: 100,
+      sortable: true,
+      render: (
+        _value: string | number | boolean,
+        item: TravelAdminRequestResponse
+      ) => `#${item.travelRequestId}`,
+    },
+    {
+      key: 'user',
+      title: 'Employee',
+      sortable: true,
+      render: (
+        _value: string | number | boolean,
+        item: TravelAdminRequestResponse
+      ) => `${item.user.firstName} ${item.user.lastName}`,
+    },
+    {
+      key: 'reasonForTravel',
+      title: 'Reason',
+      sortable: true,
+    },
+    {
+      key: 'route',
+      title: 'Route',
+      sortable: false,
+      render: (
+        _value: string | number | boolean,
+        item: TravelAdminRequestResponse
+      ) => `${item.fromLocation} → ${item.toLocation}`,
+    },
+    {
+      key: 'department',
+      title: 'Department',
+      sortable: true,
+      render: (
+        _value: string | number | boolean,
+        item: TravelAdminRequestResponse
+      ) => item.department.departmentName,
+    },
+    {
+      key: 'status',
+      title: 'Status',
+      sortable: true,
+      render: (
+        _value: string | number | boolean,
+        item: TravelAdminRequestResponse
+      ) => (
+        <Chip
+          label={item.status}
+          color={
+            item.status === 'Completed'
+              ? 'success'
+              : item.status === 'Pending'
+                ? 'warning'
+                : item.status === 'Rejected'
+                  ? 'error'
+                  : 'default'
+          }
+          size='small'
+        />
+      ),
+    },
+    {
+      key: 'actions',
+      title: 'Actions',
+      render: (
+        _value: string | number | boolean,
+        item: TravelAdminRequestResponse
+      ) => (
+        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+          <Tooltip title='View Details'>
+            <IconButton
+              size='small'
+              onClick={() => {
+                setSelectedRequest(item);
+                setRequestDetailsDialogOpen(true);
+              }}
+            >
+              <Visibility />
+            </IconButton>
+          </Tooltip>
+          {(item.status === 'Approved' || item.status === 'Pending') && (
+            <>
+              <Tooltip title='Book Ticket'>
+                <IconButton
+                  size='small'
+                  color='primary'
+                  onClick={() => handleBookTicket(item.travelRequestId)}
+                >
+                  <Flight />
+                </IconButton>
+              </Tooltip>
+              {item.status === 'Approved' && (
+                <Tooltip title='Return to Employee'>
+                  <IconButton
+                    size='small'
+                    color='warning'
+                    onClick={() => handleReturnToEmployee(item.travelRequestId)}
+                  >
+                    <Reply />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </>
+          )}
+          {item.ticketUrl && (
+            <Tooltip title='Download Ticket PDF'>
+              <IconButton
+                size='small'
+                color='success'
+                onClick={() => handleDownloadPdf(item.travelRequestId)}
+              >
+                <Visibility />
+              </IconButton>
+            </Tooltip>
+          )}
+        </Box>
+      ),
+    },
+  ];
 
   if (loading) {
     return (
@@ -346,7 +471,7 @@ const TravelAdminDashboard: React.FC<TravelAdminDashboardProps> = () => {
     <MainLayout title='Travel Admin Dashboard'>
       <Box sx={{ p: 3 }}>
         {/* Header */}
-        <Box sx={{ mb: 3 }}>
+        <Box sx={{ mb: 3, mt: 4 }}>
           <Typography variant='h4' gutterBottom>
             Travel Admin Dashboard
           </Typography>
@@ -444,25 +569,25 @@ const TravelAdminDashboard: React.FC<TravelAdminDashboardProps> = () => {
           }}
         >
           <StatCard
-            title='Total Requests'
-            value={stats.totalRequests}
+            title='New Requests Today'
+            value={stats.newRequestsToday}
             icon={<AssignmentIcon />}
             iconColor='primary'
-            info='Total travel requests in the system'
+            info='New travel requests submitted today'
           />
           <StatCard
-            title='Pending Requests'
-            value={stats.pendingRequests}
+            title='Requests Awaiting Booking'
+            value={stats.pendingBooking}
             icon={<ScheduleIcon />}
             iconColor='warning'
-            info='Requests awaiting processing'
+            info='Approved requests awaiting booking'
           />
           <StatCard
-            title='Completed Today'
+            title='Bookings Completed Today'
             value={stats.completedToday}
             icon={<CheckCircleIcon />}
             iconColor='success'
-            info='Requests completed today'
+            info='Travel requests booked today'
           />
           <StatCard
             title='Avg Processing Time'
@@ -543,107 +668,30 @@ const TravelAdminDashboard: React.FC<TravelAdminDashboardProps> = () => {
           </Card>
         </Box>
 
-        {/* Request List */}
+        {/* Requests Awaiting Booking Table */}
         <Card sx={{ mt: 3 }}>
           <CardContent>
             <Typography variant='h6' gutterBottom>
-              Recent Requests ({filteredRequests.length})
+              Requests Awaiting Booking (
+              {filteredRequests.filter(r => r.status === 'Approved').length})
             </Typography>
-            <List>
-              {filteredRequests.slice(0, 10).map(request => (
-                <ListItem key={request.travelRequestId}>
-                  <ListItemIcon>
-                    <CheckCircle color='primary' />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={`${request.user.firstName} ${request.user.lastName}`}
-                    secondary={
-                      <Box>
-                        <Typography variant='body2'>
-                          {request.reasonForTravel}
-                        </Typography>
-                        <Typography variant='caption' color='text.secondary'>
-                          {request.fromLocation} → {request.toLocation} •{' '}
-                          {request.department.departmentName}
-                        </Typography>
-                      </Box>
-                    }
-                  />
-                  <ListItemSecondaryAction>
-                    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-                      <Chip
-                        label={request.status}
-                        color={
-                          request.status === 'Completed'
-                            ? 'success'
-                            : request.status === 'Pending'
-                              ? 'warning'
-                              : request.status === 'Rejected'
-                                ? 'error'
-                                : 'default'
-                        }
-                        size='small'
-                      />
-                      <Tooltip title='View Details'>
-                        <IconButton
-                          size='small'
-                          onClick={() => {
-                            setSelectedRequest(request);
-                            setRequestDetailsDialogOpen(true);
-                          }}
-                        >
-                          <Visibility />
-                        </IconButton>
-                      </Tooltip>
-                      {(request.status === 'Approved' ||
-                        request.status === 'Pending') && (
-                        <>
-                          <Tooltip title='Book Ticket'>
-                            <IconButton
-                              size='small'
-                              color='primary'
-                              onClick={() =>
-                                handleBookTicket(request.travelRequestId)
-                              }
-                            >
-                              <Flight />
-                            </IconButton>
-                          </Tooltip>
-                          {request.status === 'Approved' && (
-                            <Tooltip title='Return to Employee'>
-                              <IconButton
-                                size='small'
-                                color='warning'
-                                onClick={() =>
-                                  handleReturnToEmployee(
-                                    request.travelRequestId
-                                  )
-                                }
-                              >
-                                <Reply />
-                              </IconButton>
-                            </Tooltip>
-                          )}
-                        </>
-                      )}
-                      {request.ticketUrl && (
-                        <Tooltip title='Download Ticket PDF'>
-                          <IconButton
-                            size='small'
-                            color='success'
-                            onClick={() =>
-                              handleDownloadPdf(request.travelRequestId)
-                            }
-                          >
-                            <Visibility />
-                          </IconButton>
-                        </Tooltip>
-                      )}
-                    </Box>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))}
-            </List>
+            <DataTable<TravelAdminRequestResponse>
+              columns={columns}
+              data={filteredRequests.filter(r => r.status === 'Approved')}
+              loading={loading}
+              pagination={{
+                page: 1,
+                pageSize: 10,
+                total: filteredRequests.filter(r => r.status === 'Approved')
+                  .length,
+              }}
+              searchable
+              searchPlaceholder='Search requests...'
+              exportable
+              exportFileName='requests-awaiting-booking'
+              rowKey='travelRequestId'
+              emptyText='No requests awaiting booking.'
+            />
           </CardContent>
         </Card>
 
@@ -943,7 +991,11 @@ const TravelAdminDashboard: React.FC<TravelAdminDashboardProps> = () => {
             >
               Save Draft
             </Button>
-            <Button variant='contained' onClick={handleBookingFormSubmit}>
+            <Button
+              variant='contained'
+              color='secondary'
+              onClick={handleBookingFormSubmit}
+            >
               Book Ticket
             </Button>
           </DialogActions>

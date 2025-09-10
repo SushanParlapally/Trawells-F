@@ -123,7 +123,7 @@ const getStatusSteps = (currentStatus: RequestStatus): StatusStep[] => {
     currentStatus === 'Returned to Employee'
   ) {
     return statusOrder
-      .map((status, _index) => {
+      .map(status => {
         const config = statusConfig[status];
         return {
           status,

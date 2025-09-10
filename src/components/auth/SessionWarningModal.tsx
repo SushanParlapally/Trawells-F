@@ -133,7 +133,7 @@ export const SessionWarningModal: React.FC<SessionWarningModalProps> = ({
 
           <Typography variant='body2' color='text.secondary' sx={{ mb: 2 }}>
             You will be automatically logged out when the timer reaches zero.
-            Click "Stay Logged In" to extend your session.
+            Click &quot;Stay Logged In&quot; to extend your session.
           </Typography>
 
           <Box sx={{ mb: 2 }}>

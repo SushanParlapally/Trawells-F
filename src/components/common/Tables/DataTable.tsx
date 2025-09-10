@@ -31,7 +31,6 @@ export function DataTable<T extends Record<string, unknown>>({
   const [searchTerm, setSearchTerm] = useState('');
   const [sortConfig, setSortConfig] = useState<SortConfig | null>(null);
 
-  // Filter data based on search term
   const filteredData = useMemo(() => {
     if (!searchTerm) return data;
 
@@ -42,35 +41,37 @@ export function DataTable<T extends Record<string, unknown>>({
     );
   }, [data, searchTerm]);
 
-  // Sort data based on sort configuration
   const sortedData = useMemo(() => {
     if (!sortConfig) return filteredData;
 
     return [...filteredData].sort((a, b) => {
-      const aValue = a[sortConfig.key] as unknown;
-      const bValue = b[sortConfig.key] as unknown;
+      const aValue = a[sortConfig.key as keyof T];
+      const bValue = b[sortConfig.key as keyof T];
 
       if (aValue === null || aValue === undefined) return 1;
       if (bValue === null || bValue === undefined) return -1;
 
-      if (aValue < bValue) {
+      const compareA = String(aValue).toLowerCase();
+      const compareB = String(bValue).toLowerCase();
+
+      if (compareA < compareB) {
         return sortConfig.direction === 'asc' ? -1 : 1;
       }
-      if (aValue > bValue) {
+      if (compareA > compareB) {
         return sortConfig.direction === 'asc' ? 1 : -1;
       }
       return 0;
     });
   }, [filteredData, sortConfig]);
 
-  const handleSort = (columnKey: string) => {
+  const handleSort = (columnKey: keyof T) => {
     const column = columns.find(col => col.key === columnKey);
     if (!column?.sortable) return;
 
     const newSortConfig: SortConfig = {
-      key: columnKey,
+      key: String(columnKey),
       direction:
-        sortConfig?.key === columnKey && sortConfig.direction === 'asc'
+        sortConfig?.key === String(columnKey) && sortConfig.direction === 'asc'
           ? 'desc'
           : 'asc',
     };
@@ -79,19 +80,18 @@ export function DataTable<T extends Record<string, unknown>>({
     onSort?.(newSortConfig);
   };
 
+  const handlePageChange = (page: number, pageSize: number) => {
+    onPaginationChange?.(page, pageSize);
+  };
+
   const handleSearch = (value: string) => {
     setSearchTerm(value);
   };
 
   const handleExport = () => {
-    // Simple CSV export
-    const headers = columns.map(col => col.key).join(',');
+    const headers = columns.map(col => String(col.key)).join(',');
     const rows = sortedData
-      .map(item =>
-        columns
-          .map(col => String((item as Record<string, unknown>)[col.key] || ''))
-          .join(',')
-      )
+      .map(item => columns.map(col => String(item[col.key] || '')).join(','))
       .join('\n');
 
     const csv = `${headers}\n${rows}`;
@@ -126,31 +126,28 @@ export function DataTable<T extends Record<string, unknown>>({
 
   return (
     <Paper>
-      <TableToolbar
-        searchable={searchable}
-        searchValue={searchTerm}
-        onSearch={handleSearch}
-        searchPlaceholder={searchPlaceholder}
-        exportable={exportable}
-        onExport={handleExport}
-        selectedCount={0}
-      />
-
+      {(searchable || exportable) && (
+        <TableToolbar
+          onSearch={handleSearch}
+          onExport={exportable ? handleExport : undefined}
+          searchPlaceholder={searchPlaceholder}
+        />
+      )}
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
               {columns.map(column => (
                 <TableCell
-                  key={column.key}
+                  key={String(column.key)}
                   align={column.align || 'left'}
-                  style={{ width: column.width }}
-                  sortDirection={getSortDirection(column.key)}
-                  onClick={() => handleSort(column.key)}
                   sx={{
+                    width: column.width,
                     cursor: column.sortable ? 'pointer' : 'default',
                     userSelect: 'none',
                   }}
+                  sortDirection={getSortDirection(String(column.key))}
+                  onClick={() => column.sortable && handleSort(column.key)}
                 >
                   {column.title}
                 </TableCell>
@@ -168,26 +165,19 @@ export function DataTable<T extends Record<string, unknown>>({
               </TableRow>
             ) : (
               sortedData.map((item, index) => (
-                <TableRow
-                  key={
-                    String((item as Record<string, unknown>)[rowKey]) || index
-                  }
-                  hover
-                >
+                <TableRow key={String(item[rowKey])} hover>
                   {columns.map(column => (
-                    <TableCell key={column.key} align={column.align || 'left'}>
+                    <TableCell
+                      key={String(column.key)}
+                      align={column.align || 'left'}
+                    >
                       {column.render
                         ? column.render(
-                            (item as Record<string, unknown>)[column.key] as
-                              | string
-                              | number
-                              | boolean,
+                            item[column.key] as string | number | boolean,
                             item,
                             index
                           )
-                        : String(
-                            (item as Record<string, unknown>)[column.key] || ''
-                          )}
+                        : String(item[column.key] || '')}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -202,13 +192,9 @@ export function DataTable<T extends Record<string, unknown>>({
           page={pagination.page}
           pageSize={pagination.pageSize}
           total={pagination.total}
-          onPageChange={(page, pageSize) =>
-            onPaginationChange?.(page, pageSize)
-          }
+          onPageChange={handlePageChange}
         />
       )}
     </Paper>
   );
 }
-
-export default DataTable;

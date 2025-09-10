@@ -7,14 +7,12 @@ import {
   CircularProgress,
   Tabs,
   Tab,
-  Snackbar,
   Stack,
 } from '@mui/material';
 import { useAppSelector } from '../../hooks/redux';
 import { selectUser } from '../../store/slices/authSlice';
 import { MainLayout } from '../common/Layout';
 import SystemStatsCharts from './charts/SystemStatsCharts';
-import SystemHealthIndicator from './SystemHealthIndicator';
 import RecentActivities from './RecentActivities';
 import QuickActions from './QuickActions';
 import { UserManagement } from './UserManagement';
@@ -24,6 +22,13 @@ import { travelRequestService } from '../../services/api/travelRequestService';
 import type { DashboardDto } from '../../types';
 import { AuthService } from '../../services/auth/authService';
 import AuditTrailTable from './AuditTrailTable'; // Import the new component
+import StatCard from '../common/StatCard';
+import {
+  People as PeopleIcon,
+  Business as BusinessIcon,
+  Assignment as ProjectIcon,
+  Flight as RequestIcon,
+} from '@mui/icons-material';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -52,8 +57,6 @@ const AdminDashboard: React.FC = React.memo(() => {
   const [tabValue, setTabValue] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage] = useState('');
 
   const [dashboardData, setDashboardData] = useState<DashboardDto | null>(null);
 
@@ -123,7 +126,7 @@ const AdminDashboard: React.FC = React.memo(() => {
     <MainLayout title='Admin Dashboard'>
       <Stack spacing={3}>
         {/* Welcome Section */}
-        <Paper sx={{ p: 3 }}>
+        <Paper sx={{ p: 3, mt: 4 }}>
           <Typography variant='h4' gutterBottom>
             Welcome, {user?.firstName} {user?.lastName}!
           </Typography>
@@ -141,12 +144,47 @@ const AdminDashboard: React.FC = React.memo(() => {
         )}
 
         {/* System Health - Using actual data */}
-        <SystemHealthIndicator
-          usersCount={dashboardData?.requests?.length || 0}
-          departmentsCount={dashboardData?.requests?.length || 0}
-          projectsCount={dashboardData?.requests?.length || 0}
-          requestsCount={dashboardData?.requests?.length || 0}
-        />
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: '1fr',
+              sm: '1fr 1fr',
+              md: '1fr 1fr 1fr 1fr',
+            },
+            gap: 3,
+            mb: 3,
+          }}
+        >
+          <StatCard
+            title='Total Users'
+            value={dashboardData?.totalUsers || 0}
+            icon={<PeopleIcon />}
+            iconColor='primary'
+            info='Total number of users in the system'
+          />
+          <StatCard
+            title='Departments'
+            value={dashboardData?.totalDepartments || 0}
+            icon={<BusinessIcon />}
+            iconColor='info'
+            info='Active departments in the organization'
+          />
+          <StatCard
+            title='Projects'
+            value={dashboardData?.totalProjects || 0}
+            icon={<ProjectIcon />}
+            iconColor='success'
+            info='Active projects available for travel requests'
+          />
+          <StatCard
+            title='Travel Requests'
+            value={dashboardData?.totalRequests || 0}
+            icon={<RequestIcon />}
+            iconColor='warning'
+            info='Total travel requests in the system'
+          />
+        </Box>
 
         {/* Dashboard Tabs */}
         <Paper sx={{ width: '100%' }}>
@@ -215,14 +253,6 @@ const AdminDashboard: React.FC = React.memo(() => {
           </TabPanel>
         </Paper>
       </Stack>
-
-      {/* Snackbar for notifications */}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={() => setSnackbarOpen(false)}
-        message={snackbarMessage}
-      />
     </MainLayout>
   );
 });

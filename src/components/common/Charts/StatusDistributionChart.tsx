@@ -76,7 +76,7 @@ const StatusDistributionChart: React.FC<StatusDistributionChartProps> =
       const chartData: StatusDataPoint[] = useMemo(
         () =>
           Object.entries(data)
-            .filter(([_, count]) => count > 0)
+            .filter(([, count]) => count > 0)
             .map(([status, count]) => ({
               status: STATUS_LABELS[status as RequestStatus] || status,
               count,

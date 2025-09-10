@@ -57,7 +57,7 @@ export const RoleManagement: React.FC = () => {
       setState(prev => ({ ...prev, loading: true, error: null }));
 
       // Backend only supports GET all roles (excluding Admin)
-      const roles = await roleService.getRoles();
+      const roles = await roleService.getAllRoles();
 
       setState(prev => ({
         ...prev,
@@ -86,7 +86,7 @@ export const RoleManagement: React.FC = () => {
     });
   };
 
-  const handleEditRole = (_role: Role) => {
+  const handleEditRole = () => {
     setSnackbar({
       open: true,
       message: 'Role editing is not supported by the backend',

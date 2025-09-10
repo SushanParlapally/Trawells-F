@@ -18,7 +18,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   pageSizeOptions = [10, 20, 50, 100],
   showSizeChanger = true,
 }) => {
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     onPageChange(newPage + 1, pageSize); // MUI uses 0-based indexing
   };
 

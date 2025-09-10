@@ -97,7 +97,7 @@ class ErrorBoundary extends Component<Props, State> {
             </Typography>
 
             <Typography variant='body1' color='text.secondary' sx={{ mb: 3 }}>
-              We're sorry, but something unexpected happened. Please try
+              We&apos;re sorry, but something unexpected happened. Please try
               refreshing the page or contact support if the problem persists.
             </Typography>
 

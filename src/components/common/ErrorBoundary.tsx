@@ -79,8 +79,8 @@ export class ErrorBoundary extends Component<Props, State> {
                 Oops! Something went wrong
               </Typography>
               <Typography variant='body2' color='text.secondary'>
-                We're sorry for the inconvenience. The error has been reported
-                and we're working to fix it.
+                We&apos;re sorry for the inconvenience. The error has been
+                reported and we&apos;re working to fix it.
               </Typography>
             </Alert>
 
@@ -152,7 +152,9 @@ export function withErrorBoundary<P extends object>(
   fallback?: ReactNode,
   onError?: (error: Error, errorInfo: ErrorInfo) => void
 ) {
-  return class extends Component<P, State> {
+  const WrappedComponentWithBoundary = class extends Component<P, State> {
+    static displayName = `withErrorBoundary(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+
     constructor(props: P) {
       super(props);
       this.state = { hasError: false };
@@ -173,18 +175,13 @@ export function withErrorBoundary<P extends object>(
     override render() {
       if (this.state.hasError) {
         return (
-          fallback || (
-            <ErrorBoundary
-              fallback={fallback}
-              onError={onError}
-              children={null}
-            />
-          )
+          fallback || <ErrorBoundary fallback={fallback} onError={onError} />
         );
       }
       return <WrappedComponent {...this.props} />;
     }
   };
+  return WrappedComponentWithBoundary;
 }
 
 // Hook for functional components

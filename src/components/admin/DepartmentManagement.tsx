@@ -104,7 +104,7 @@ export const DepartmentManagement: React.FC = () => {
     });
   };
 
-  const handleEditDepartment = (_department: Department) => {
+  const handleEditDepartment = () => {
     setSnackbar({
       open: true,
       message: 'Department editing is not supported by the backend',
@@ -113,7 +113,7 @@ export const DepartmentManagement: React.FC = () => {
     setState(prev => ({ ...prev, anchorEl: null, menuDepartment: null }));
   };
 
-  const handleToggleDepartmentStatus = async (_department: Department) => {
+  const handleToggleDepartmentStatus = () => {
     setSnackbar({
       open: true,
       message: 'Department status toggle is not supported by the backend',
@@ -122,7 +122,7 @@ export const DepartmentManagement: React.FC = () => {
     setState(prev => ({ ...prev, anchorEl: null, menuDepartment: null }));
   };
 
-  const handleDeleteDepartment = async (_department: Department) => {
+  const handleDeleteDepartment = () => {
     setSnackbar({
       open: true,
       message: 'Department deletion is not supported by the backend',

@@ -10,6 +10,7 @@ import {
   CardContent,
   Tabs,
   Tab,
+  Tooltip,
 } from '@mui/material';
 import {
   Dashboard as DashboardIcon,
@@ -339,6 +340,7 @@ const ManagerDashboard: React.FC = () => {
           justifyContent: 'space-between',
           alignItems: 'center',
           mb: 3,
+          mt: 4,
         }}
       >
         <Box>
@@ -346,7 +348,7 @@ const ManagerDashboard: React.FC = () => {
             Welcome, {user?.firstName} {user?.lastName}!
           </Typography>
           <Typography variant='body1' color='text.secondary'>
-            Manage your team's travel requests and view travel statistics.
+            Manage your team&apos;s travel requests and view travel statistics.
           </Typography>
         </Box>
 
@@ -401,7 +403,9 @@ const ManagerDashboard: React.FC = () => {
           >
             <Tab icon={<DashboardIcon />} label='Overview' />
             <Tab icon={<AnalyticsIcon />} label='Analytics' />
-            <Tab icon={<AssignmentIcon />} label='Approval Queue' />
+            <Tooltip title='Coming Soon' arrow>
+              <Tab icon={<AssignmentIcon />} label='Approval Queue' disabled />
+            </Tooltip>
             <Tab icon={<PeopleIcon />} label='Team Performance' />
           </Tabs>
         </Box>

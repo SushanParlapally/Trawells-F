@@ -1,10 +1,43 @@
-import { useRef, useEffect, useCallback, useMemo, useState } from 'react';
-import type { ComponentType, DependencyList } from 'react';
+/// <reference lib="dom" />
+import {
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+  useState,
+  type ComponentType,
+  type DependencyList,
+} from 'react';
 
 // Performance monitoring utilities
 
+interface PerformanceMemory {
+  usedJSHeapSize: number;
+  totalJSHeapSize: number;
+  jsHeapSizeLimit: number;
+}
+
+interface PerformanceBudget {
+  [key: string]: number;
+}
+
+interface NetworkConnection {
+  effectiveType: string;
+  downlink: number;
+  rtt: number;
+  addEventListener: (event: string, callback: () => void) => void;
+  removeEventListener: (event: string, callback: () => void) => void;
+}
+
+// Explicitly define IntersectionObserverInit if not recognized globally
+interface IntersectionObserverInit {
+  root?: Element | Document | null;
+  rootMargin?: string;
+  threshold?: number | number[];
+}
+
 export const usePerformanceMonitor = () => {
-  // const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  // const timeoutRef = useRef<number | null>(null);
 
   const startTimeRef = useRef<number>(0);
   const measurementsRef = useRef<Map<string, number[]>>(new Map());
@@ -51,18 +84,19 @@ export const usePerformanceMonitor = () => {
 
 // Intersection Observer for lazy loading
 export const useIntersectionObserver = (
-  callback: IntersectionObserverCallback,
+  callback: (
+    entries: IntersectionObserverEntry[],
+    observer: IntersectionObserver
+  ) => void,
   options: IntersectionObserverInit = {}
-) => {
+): IntersectionObserver | null => {
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     observerRef.current = new IntersectionObserver(callback, options);
 
     return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
+      observerRef.current?.disconnect();
     };
   }, [callback, options]);
 
@@ -74,7 +108,7 @@ export const useDebounce = <T extends (...args: unknown[]) => unknown>(
   callback: T,
   delay: number
 ): T => {
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<number | null>(null);
 
   return useCallback(
     (...args: Parameters<T>) => {
@@ -95,7 +129,7 @@ export const useThrottle = <T extends (...args: unknown[]) => unknown>(
   delay: number
 ): T => {
   const lastCallRef = useRef<number>(0);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<number | null>(null);
 
   return useCallback(
     (...args: Parameters<T>) => {
@@ -121,18 +155,13 @@ export const useThrottle = <T extends (...args: unknown[]) => unknown>(
   ) as T;
 };
 
-// Memory usage monitoring
 export const useMemoryMonitor = () => {
-  const [memoryInfo, setMemoryInfo] = useState<{
-    usedJSHeapSize: number;
-    totalJSHeapSize: number;
-    jsHeapSizeLimit: number;
-  } | null>(null);
+  const [memoryInfo, setMemoryInfo] = useState<PerformanceMemory | null>(null);
 
   const updateMemoryInfo = useCallback(() => {
     if ('memory' in performance) {
       setMemoryInfo(
-        (performance as Performance & { memory: typeof memoryInfo })['memory']
+        (performance as unknown as { memory: PerformanceMemory }).memory
       );
     }
   }, []);
@@ -169,7 +198,11 @@ export const useLazyComponent = <
   T extends ComponentType<Record<string, unknown>>,
 >(
   importFn: () => Promise<{ default: T }>
-) => {
+): {
+  Component: T | null;
+  loading: boolean;
+  error: Error | null;
+} => {
   const [Component, setComponent] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -195,6 +228,7 @@ export const useLazyComponent = <
 
 // Performance optimization utilities
 export const useMemoizedValue = <T>(value: T, deps: DependencyList): T => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   return useMemo(() => value, [value, ...deps]);
 };
 
@@ -202,6 +236,7 @@ export const useCallbackMemo = <T extends (...args: unknown[]) => unknown>(
   callback: T,
   deps: DependencyList
 ): T => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   return useCallback(callback, deps);
 };
 
@@ -252,22 +287,21 @@ export const useNetworkMonitor = () => {
   } | null>(null);
 
   useEffect(() => {
-    if ('connection' in navigator) {
-      const connection = (
-        navigator as Navigator & {
-          connection: {
-            effectiveType: string;
-            downlink: number;
-            rtt: number;
-            addEventListener: (event: string, callback: () => void) => void;
-            removeEventListener: (event: string, callback: () => void) => void;
-          };
-        }
-      )['connection'];
-      setNetworkInfo(connection);
+    const nav = navigator as Navigator & { connection?: NetworkConnection };
+    if ('connection' in nav && nav.connection) {
+      const connection = nav.connection;
+      setNetworkInfo({
+        effectiveType: connection.effectiveType,
+        downlink: connection.downlink,
+        rtt: connection.rtt,
+      });
 
       const updateNetworkInfo = () => {
-        setNetworkInfo(connection);
+        setNetworkInfo({
+          effectiveType: connection.effectiveType,
+          downlink: connection.downlink,
+          rtt: connection.rtt,
+        });
       };
 
       connection.addEventListener('change', updateNetworkInfo);
@@ -284,7 +318,7 @@ export const useNetworkMonitor = () => {
 };
 
 // Performance budget monitoring
-export const usePerformanceBudget = (budget: Record<string, number>) => {
+export const usePerformanceBudget = (budget: PerformanceBudget) => {
   const violationsRef = useRef<Set<string>>(new Set());
 
   const checkBudget = useCallback(

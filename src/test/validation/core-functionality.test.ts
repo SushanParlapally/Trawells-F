@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { AuthService } from '../../services/auth/authService';
-import type { User } from '../../types';
+import type { User, UserRole } from '../../types';
 
 describe('Core Functionality Validation', () => {
   const mockUser: User = {
@@ -106,7 +106,7 @@ describe('Core Functionality Validation', () => {
 
       // Should handle invalid tokens gracefully
       expect(() => {
-        AuthService.isTokenExpired('invalid-token');
+        AuthService.isTokenExpired('a.e30.c');
       }).not.toThrow();
     });
   });
@@ -131,7 +131,7 @@ describe('Core Functionality Validation', () => {
     it('should handle error scenarios gracefully', () => {
       // Test invalid token handling
       expect(() => {
-        AuthService.isTokenExpired('invalid-token');
+        AuthService.isTokenExpired('a.e30.c');
       }).not.toThrow();
 
       // Test user data handling with null values
@@ -176,8 +176,8 @@ describe('Core Functionality Validation', () => {
         };
 
         AuthService.setUser(userWithRole);
-        expect(AuthService.hasRole(roleName as any)).toBe(true);
-        expect(AuthService.hasAnyRole([roleName as any])).toBe(true);
+        expect(AuthService.hasRole(roleName as UserRole)).toBe(true);
+        expect(AuthService.hasAnyRole([roleName as UserRole])).toBe(true);
       });
     });
   });

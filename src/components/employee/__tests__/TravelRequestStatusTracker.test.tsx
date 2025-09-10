@@ -4,10 +4,10 @@ import {
   TravelRequestStatusTracker,
   StatusBadge,
 } from '../TravelRequestStatusTracker';
-import type { TravelRequest } from '../../../types';
+import type { TravelRequest, RequestStatus } from '../../../types';
 
 // Mock travel request data
-const createMockTravelRequest = (status: string): TravelRequest => ({
+const createMockTravelRequest = (status: RequestStatus): TravelRequest => ({
   travelRequestId: 123,
   userId: 1,
   projectId: 1,
@@ -17,7 +17,7 @@ const createMockTravelRequest = (status: string): TravelRequest => ({
   toDate: '2024-01-17',
   fromLocation: 'New York',
   toLocation: 'Los Angeles',
-  status: status as any,
+  status: status,
   createdOn: '2024-01-10',
   modifiedOn: '2024-01-12',
   isActive: true,
@@ -140,7 +140,7 @@ describe('TravelRequestStatusTracker', () => {
       ];
 
       statuses.forEach(({ status, expectedColor }) => {
-        const { container } = render(<StatusBadge status={status as any} />);
+        const { container } = render(<StatusBadge status={status} />);
 
         const chip = container.querySelector('.MuiChip-root');
         expect(chip).toHaveClass(
