@@ -291,9 +291,7 @@ export const DepartmentManagement: React.FC = () => {
           onClose={handleMenuClose}
         >
           <MenuItem
-            onClick={() =>
-              state.menuDepartment && handleEditDepartment(state.menuDepartment)
-            }
+            onClick={() => state.menuDepartment && handleEditDepartment()}
             disabled
           >
             <ListItemIcon>
@@ -304,8 +302,7 @@ export const DepartmentManagement: React.FC = () => {
 
           <MenuItem
             onClick={() =>
-              state.menuDepartment &&
-              handleToggleDepartmentStatus(state.menuDepartment)
+              state.menuDepartment && handleToggleDepartmentStatus()
             }
             disabled
           >
@@ -323,10 +320,7 @@ export const DepartmentManagement: React.FC = () => {
           </MenuItem>
 
           <MenuItem
-            onClick={() =>
-              state.menuDepartment &&
-              handleDeleteDepartment(state.menuDepartment)
-            }
+            onClick={() => state.menuDepartment && handleDeleteDepartment()}
             disabled
             sx={{ color: 'text.disabled' }}
           >
