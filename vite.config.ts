@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => {
       sourcemap: true,
       rollupOptions: {
         output: {
-          /* manualChunks: id => {
+          manualChunks: id => {
             if (id.includes('@reduxjs/toolkit') || id.includes('react-redux')) {
               return 'redux-vendor';
             }
@@ -63,7 +63,7 @@ export default defineConfig(({ mode }) => {
             if (id.includes('node_modules')) {
               return 'vendor';
             }
-          }, */
+          },
           chunkFileNames: chunkInfo => {
             const facadeModuleId = chunkInfo.facadeModuleId
               ? chunkInfo.facadeModuleId
