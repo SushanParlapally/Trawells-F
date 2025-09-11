@@ -28,7 +28,7 @@ export default defineConfig(({ mode }) => {
             },
           } as MinifyOptions)
         : undefined,
-      target: 'es2015',
+      target: 'esnext',
       sourcemap: true,
       rollupOptions: {
         output: {
