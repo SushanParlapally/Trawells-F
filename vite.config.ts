@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => {
           } as MinifyOptions)
         : undefined,
       target: 'es2015',
-      sourcemap: !isProduction,
+      sourcemap: true,
       rollupOptions: {
         output: {
           manualChunks: id => {
