@@ -26,9 +26,6 @@ export default defineConfig(({ mode }) => {
               drop_console: true,
               drop_debugger: true,
             },
-            format: {
-              comments: false,
-            },
           } as MinifyOptions)
         : undefined,
       target: 'es2015',
