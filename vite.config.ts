@@ -95,8 +95,6 @@ export default defineConfig(({ mode }) => {
     },
     optimizeDeps: {
       include: [
-        'react',
-        'react-dom',
         '@reduxjs/toolkit',
         'react-redux',
         '@mui/material',
