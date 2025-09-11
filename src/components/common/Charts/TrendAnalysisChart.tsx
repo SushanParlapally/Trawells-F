@@ -23,8 +23,8 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   useTheme,
-  SelectChangeEvent,
 } from '@mui/material';
+import type { SelectChangeEvent } from '@mui/material/Select';
 import {
   TrendingUp,
   TrendingDown,

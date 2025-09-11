@@ -9,8 +9,8 @@ import {
   InputLabel,
   Stack,
   Chip,
-  SelectChangeEvent,
 } from '@mui/material';
+import type { SelectChangeEvent } from '@mui/material/Select';
 import {
   BarChart,
   Bar,
@@ -49,7 +49,8 @@ const TravelAnalyticsChart: React.FC<TravelAnalyticsChartProps> = ({
   onMetricChange,
   onTimeRangeChange,
 }) => {
-  const [selectedMetric, setSelectedMetric] = useState<string>('requests');
+  const [selectedMetric, setSelectedMetric] =
+    useState<keyof typeof metrics>('requests');
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d' | '1y'>(
     '30d'
   );
