@@ -60,39 +60,32 @@ export const apiClient = axios.create({
 // Request interceptor for authentication and logging
 apiClient.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
-    // Skip auth for login and public endpoints (matches backend routes exactly)
+    // Skip auth for login and public endpoints
     const publicEndpoints = ['/api/Login', '/health'];
     const isPublicEndpoint = publicEndpoints.some(endpoint =>
       config.url?.includes(endpoint)
     );
 
     if (!isPublicEndpoint) {
-      // Get token using AuthService (which handles secure storage)
       const token = AuthService.getToken();
 
-      // Race condition fix: Check if user is authenticated before throwing error
       if (!token) {
-        if (!AuthService.isAuthenticated()) {
-          console.warn('API call attempted before authentication completed');
-          throw new Error('Authentication required');
-        }
-        // No token available, reject the request
-        throw new Error('Authentication required');
+        // This is a critical error, as a token should be present for protected routes.
+        // It indicates a logic error in routing or state management.
+        console.error(
+          'CRITICAL: No auth token found for a protected API endpoint.',
+          {
+            url: config.url,
+          }
+        );
+        // Rejecting the request to prevent further errors.
+        // A global error handler could catch this and redirect to a login or error page.
+        return Promise.reject(new Error('Authentication token is missing.'));
       }
 
-      // Check if token is expired
-      if (AuthService.isTokenExpired(token)) {
-        // Try to refresh token (backend doesn't have refresh endpoint yet)
-        const refreshed = await AuthService.refreshTokenIfNeeded();
-        if (!refreshed) {
-          throw new Error('Token expired and refresh failed');
-        }
-      }
-
-      // Add the (potentially refreshed) token to headers
-      const currentToken = AuthService.getToken();
-      if (currentToken && config.headers) {
-        config.headers.Authorization = `Bearer ${currentToken}`;
+      // Add the token to headers
+      if (config.headers) {
+        config.headers.Authorization = `Bearer ${token}`;
       }
 
       // Update session activity

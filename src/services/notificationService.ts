@@ -1,7 +1,22 @@
 import * as signalR from '@microsoft/signalr';
 import { toast } from 'react-toastify';
 
-const URL = import.meta.env.VITE_API_BASE_URL + '/notificationHub'; // Your SignalR Hub URL
+const getBaseURL = () => {
+  const envURL = import.meta.env['VITE_API_BASE_URL'];
+  const fallbackURL = 'https://trawells.onrender.com';
+  const baseURL = envURL || fallbackURL;
+
+  // Debug logging
+  console.log('🔧 Notification Service Configuration:', {
+    envURL,
+    fallbackURL,
+    finalBaseURL: baseURL,
+  });
+
+  return baseURL;
+};
+
+const URL = getBaseURL() + '/notificationHub'; // Your SignalR Hub URL
 
 class NotificationService {
   private connection: signalR.HubConnection;
