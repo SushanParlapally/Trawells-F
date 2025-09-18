@@ -181,10 +181,17 @@ export const selectAuthLoading = (state: { auth: AuthState }) =>
   state.auth.loading;
 export const selectAuthError = (state: { auth: AuthState }) => state.auth.error;
 export const selectUserRole = (state: { auth: AuthState }): UserRole | null => {
+  const validRoles: UserRole[] = [
+    'Admin',
+    'TravelAdmin',
+    'Manager',
+    'Employee',
+  ];
+
   // First try to get role from Redux store user object
-  const userRole = state.auth.user?.role?.roleName as UserRole;
-  if (userRole) {
-    return userRole;
+  const userRole = state.auth.user?.role?.roleName;
+  if (userRole && validRoles.includes(userRole as UserRole)) {
+    return userRole as UserRole;
   }
 
   // Fallback: try to get role from token if user object is not available
@@ -192,7 +199,10 @@ export const selectUserRole = (state: { auth: AuthState }): UserRole | null => {
     const token = AuthService.getToken();
     if (token && !AuthService.isTokenExpired(token)) {
       const tokenPayload = AuthService.decodeToken(token);
-      return tokenPayload.role as UserRole;
+      const tokenRole = tokenPayload.role;
+      if (tokenRole && validRoles.includes(tokenRole as UserRole)) {
+        return tokenRole as UserRole;
+      }
     }
   } catch (error) {
     console.warn('Failed to get role from token:', error);
